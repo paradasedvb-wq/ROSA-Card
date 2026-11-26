@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ROSA Card</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+:root{
+  --brand-on-accent:#fff;--brand-accent:#0077FF;
+  --gold:#b8870e;--gold-l:#d4a82a;--brass:#9a7030;
+  --red:#e2412b;--yel:#f2c12e;--grn:#2fae5c;--blu:#2d7de0;
+  --ink:#1a1208;--ink-d:#7a6a50;
+  --easeOut:cubic-bezier(.2,.9,.4,1);
+}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#fff;color:var(--ink);}
+
+/* ── Logo ── */
+.logo-wrap{display:inline-flex;align-items:flex-end;gap:0;padding:0 16px 14px 0;transform:rotate(-3deg);}
+.uno-icon{
+  width:112px;height:112px;
+  background:radial-gradient(circle at 38% 28%,#ff5a4a,#b81610 65%,#8a0e0a);
+  border-radius:26px;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  padding-top:10px;
+  box-shadow:0 5px 0 #7a0a06,0 14px 30px rgba(160,20,10,.55),inset 0 2px 0 rgba(255,150,130,.28);
+  position:relative;overflow:visible;z-index:1;
+}
+.uno-icon .iface{position:absolute;inset:0;border-radius:26px;overflow:hidden;background:inherit;z-index:0;}
+.uno-icon .iface::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 88% 55% at 40% 5%,rgba(255,255,255,.24),transparent 62%);}
+.uno-txt{
+  position:relative;z-index:2;
+  font-family:Impact,"Arial Black","Helvetica Neue",sans-serif;
+  font-style:italic;font-weight:900;font-size:34px;color:#FFE000;
+  letter-spacing:0;line-height:1;
+  text-shadow:-4px -4px 0 #000,4px -4px 0 #000,-4px 4px 0 #000,4px 4px 0 #000,-4px 0 0 #000,4px 0 0 #000,0 -4px 0 #000,0 4px 0 #000,2px 6px 0 rgba(0,0,0,.55);
+  transform:skewX(-5deg);
+}
+.card-fan{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:96px;height:48px;z-index:2;}
+.fc-card{
+  position:absolute;bottom:0;width:30px;height:43px;border-radius:6px;
+  border:2.5px solid rgba(255,255,255,.94);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:900;color:#fff;font-family:"Arial Black",sans-serif;
+  box-shadow:0 3px 8px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.22);
+}
+.vk-badge-logo{
+  width:50px;height:50px;background:#0077FF;border-radius:14px;
+  border:3.5px solid #fff;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 0 #0055b3,0 8px 20px rgba(0,100,220,.45);
+  position:relative;z-index:3;
+  margin-left:-20px;margin-bottom:6px;flex-shrink:0;
+}
+.vk-badge-logo span{font-size:30px;font-weight:900;color:var(--brand-on-accent);}
+.tagline{text-align:center;color:var(--ink-d);font-size:12px;letter-spacing:3px;text-transform:uppercase;margin-top:10px;}
+/* mini logo in topbar */
+.mini-logo{flex-shrink:0;display:flex;align-items:flex-end;gap:0;padding-bottom:3px;}
+.mini-uno{
+  width:52px;height:52px;
+  background:radial-gradient(circle at 38% 28%,#ff5a4a,#8a0e0a 70%);
+  border-radius:12px;
+  display:flex;flex-direction:column;align-items:center;padding-top:5px;
+  box-shadow:0 3px 0 #7a0a06,0 6px 14px rgba(160,20,10,.4);
+  position:relative;overflow:visible;z-index:1;
+}
+.mini-uno .iface{position:absolute;inset:0;border-radius:12px;overflow:hidden;background:inherit;z-index:0;}
+.mini-uno-txt{
+  font-family:Impact,"Arial Black",sans-serif;font-style:italic;font-weight:900;
+  font-size:16px;color:#FFE000;letter-spacing:0;line-height:1;
+  position:relative;z-index:2;transform:skewX(-5deg);
+  text-shadow:-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000,2px 2px 0 #000,0 -2px 0 #000,0 2px 0 #000;
+}
+.mini-fan{position:absolute;bottom:-3px;left:50%;transform:translateX(-50%);width:48px;height:22px;z-index:2;}
+.mfc{position:absolute;bottom:0;width:13px;height:19px;border-radius:3px;border:1.5px solid rgba(255,255,255,.92);font-size:4px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,.45);}
+.mini-vk-b{
+  width:26px;height:26px;background:#0077FF;border-radius:7px;
+  border:2px solid #fff;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 0 #0055b3,0 4px 10px rgba(0,100,220,.35);
+  margin-left:-7px;margin-bottom:2px;flex-shrink:0;
+}
+.mini-vk-b span{font-size:16px;font-weight:900;color:var(--brand-on-accent);}
+
+/* Screens */
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
+.hidden{display:none!important;}
+.panel{background:#fff;border:1px solid rgba(154,112,48,.15);border-radius:22px;padding:24px 22px;max-width:440px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,.09);}
+.flabel{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin:14px 0 6px;font-weight:800;}
+.nick-in{width:100%;padding:11px 13px;border-radius:11px;border:1.5px solid rgba(154,112,48,.22);background:#fffdf7;color:var(--ink);font-size:15px;font-weight:600;outline:none;transition:.15s;}
+.nick-in::placeholder{color:rgba(26,18,8,.3);}
+.nick-in:focus{border-color:var(--gold-l);box-shadow:0 0 0 3px rgba(212,168,42,.12);}
+.brow{display:flex;gap:7px;flex-wrap:wrap;}
+.cb{flex:1;min-width:52px;background:#f8f4ec;border:1.5px solid rgba(154,112,48,.18);color:var(--ink);padding:8px 4px;border-radius:11px;cursor:pointer;font-size:13px;font-weight:700;transition:.15s;text-align:center;}
+.cb:hover{border-color:var(--gold-l);}
+.cb.on{background:linear-gradient(180deg,var(--gold-l),var(--brass));color:#fff;border-color:var(--brass);box-shadow:0 5px 12px rgba(154,112,48,.25);}
+.cb-adapt{border-color:rgba(100,60,200,.3)!important;color:#5a30c0!important;background:rgba(100,60,200,.07)!important;}
+.cb-adapt.on{background:linear-gradient(180deg,#8b5cf6,#5a30c0)!important;color:#fff!important;border-color:#5a30c0!important;box-shadow:0 5px 14px rgba(90,48,192,.35)!important;}
+.algo-note{font-size:11px;color:var(--ink-d);line-height:1.55;margin-top:12px;border-top:1px dashed rgba(154,112,48,.15);padding-top:10px;}
+.adapt-bar{margin-top:8px;padding:10px 12px;border-radius:12px;background:rgba(100,60,200,.05);border:1.5px solid rgba(100,60,200,.18);color:#5a30c0;}
+.adapt-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.adapt-grade{font-size:18px;font-weight:900;color:#5a30c0;letter-spacing:.5px;}
+.adapt-streak{font-size:11px;font-weight:800;padding:2px 9px;border-radius:10px;}
+.adapt-streak.ws{background:rgba(46,174,92,.15);color:#1f8a47;}
+.adapt-streak.ls{background:rgba(226,65,43,.12);color:#b5301f;}
+.adapt-streak.ns{background:rgba(100,60,200,.1);color:#5a30c0;}
+.adapt-track{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.adapt-bg{flex:1;height:8px;background:rgba(100,60,200,.14);border-radius:8px;overflow:hidden;}
+.adapt-fill{height:100%;background:linear-gradient(90deg,#a78bfa,#5a30c0);border-radius:8px;transition:width .6s var(--easeOut);}
+.adapt-stats{display:flex;gap:6px;margin-bottom:6px;}
+.adapt-stat{flex:1;background:rgba(100,60,200,.07);border-radius:9px;padding:5px 4px;text-align:center;}
+.adapt-stat .sv{font-size:13px;font-weight:900;}
+.adapt-stat .sk{font-size:9px;opacity:.7;margin-top:1px;}
+.adapt-tags{display:flex;flex-wrap:wrap;gap:4px;}
+.atag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:rgba(100,60,200,.1);color:#5a30c0;}
+.go-btn{margin-top:18px;width:100%;background:linear-gradient(180deg,#ff5d3f,var(--red));border:none;color:#fff;font-weight:800;font-size:16px;padding:13px;border-radius:13px;cursor:pointer;letter-spacing:1px;box-shadow:0 10px 22px rgba(226,65,43,.28);transition:.15s;}
+.go-btn:hover{transform:translateY(-2px);}
+.howto-link{margin-top:12px;text-align:center;font-size:12px;color:var(--gold);cursor:pointer;font-weight:700;text-decoration:underline dotted;}
+.lang-row{display:flex;gap:6px;flex-wrap:wrap;}
+.lb{background:#f8f4ec;border:1.5px solid rgba(154,112,48,.18);border-radius:9px;padding:5px 8px;cursor:pointer;font-size:12px;font-weight:700;color:var(--ink);transition:.15s;white-space:nowrap;}
+.lb:hover{border-color:var(--gold-l);}
+.lb.on{background:linear-gradient(180deg,var(--gold-l),var(--brass));color:#fff;border-color:var(--brass);}
+
+/* Howto modal */
+.mo-bg{position:fixed;inset:0;background:rgba(0,0,0,.32);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(4px);}
+.mo-box{background:#fff;border-radius:22px;padding:24px;max-width:480px;width:calc(100% - 32px);max-height:88vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.18);}
+.mo-box h2{font-size:18px;color:var(--red);margin-bottom:4px;font-style:italic;}
+.mo-box h3{font-size:12px;color:var(--gold);margin:14px 0 5px;text-transform:uppercase;letter-spacing:1px;}
+.mo-box p{font-size:13px;color:var(--ink-d);line-height:1.65;margin-bottom:6px;}
+.rule{display:flex;gap:10px;align-items:flex-start;background:#f8f4ec;border-radius:11px;padding:8px 11px;margin-bottom:5px;font-size:12.5px;color:var(--ink);}
+.rule .em{font-size:17px;flex-shrink:0;}
+.mo-close{margin-top:16px;width:100%;background:linear-gradient(180deg,#ff5d3f,var(--red));border:none;color:#fff;font-weight:800;font-size:14px;padding:11px;border-radius:12px;cursor:pointer;}
+
+/* Game */
+#game{position:fixed;inset:0;display:flex;flex-direction:column;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;background:#fff;border-bottom:1px solid rgba(154,112,48,.1);flex-shrink:0;gap:8px;}
+.mini-logo{flex-shrink:0;margin:-4px -8px;}
+.meta-txt{font-size:11px;color:var(--ink-d);font-weight:600;flex:1;text-align:center;}
+.tbr{display:flex;gap:7px;align-items:center;}
+.ib{background:#f8f4ec;border:1.5px solid rgba(154,112,48,.2);color:var(--ink-d);padding:5px 10px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;transition:.15s;white-space:nowrap;}
+.ib:hover{border-color:var(--gold);}
+.ib.on{background:var(--gold-l);color:#fff;border-color:var(--brass);}
+.ai-pill{display:flex;align-items:center;gap:6px;background:#fffdf7;border:1px solid rgba(184,135,14,.22);border-radius:18px;padding:4px 10px;font-size:10px;font-weight:700;color:var(--gold);flex-shrink:0;}
+.led{width:6px;height:6px;border-radius:50%;background:var(--gold-l);animation:ledP 1.1s infinite;}
+@keyframes ledP{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+.table{flex:1;position:relative;display:grid;grid-template-rows:auto 1fr auto;padding:6px 10px;min-height:0;perspective:1200px;perspective-origin:50% 30%;overflow:hidden;}
+
+/* Opponents */
+.opps{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;padding:6px 8px;}
+.opp{background:#fff;border:1.5px solid rgba(154,112,48,.14);border-radius:16px;padding:8px 12px 12px;flex:1;min-width:150px;max-width:260px;text-align:center;position:relative;transition:transform .3s var(--easeOut),box-shadow .3s;box-shadow:0 4px 16px rgba(0,0,0,.06);display:flex;flex-direction:column;align-items:center;gap:3px;overflow:visible;}
+.opp.act{border-color:var(--gold);box-shadow:0 0 0 2px rgba(212,168,42,.35),0 8px 20px rgba(0,0,0,.1);transform:translateY(-4px);}
+.opp .on{font-weight:800;font-size:12px;}
+.opp .ol{font-size:10px;color:var(--ink-d);}
+.utag{position:absolute;top:-9px;right:-7px;background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:7px;transform:rotate(10deg);border:2px solid #fff;}
+.vtag{position:absolute;top:-9px;left:-7px;background:var(--yel);color:#1a1208;font-size:9px;font-weight:800;padding:2px 6px;border-radius:7px;transform:rotate(-10deg);border:2px solid #fff;animation:vp .8s infinite;}
+@keyframes vp{0%,100%{opacity:1;}50%{opacity:.5;}}
+.fan{position:relative;width:100%;height:44px;margin-top:2px;overflow:visible;}
+.fc{position:absolute;width:22px;height:32px;border-radius:4px;background:repeating-linear-gradient(115deg,#1c130b 0,#211609 2px,#170f07 4px),linear-gradient(160deg,#241608,#0f0904);border:1.5px solid var(--brass);box-shadow:0 1px 0 #7a5824,0 3px 6px rgba(0,0,0,.22);transform-origin:50% 110%;bottom:0;}
+.ocnt{font-size:11px;font-weight:800;color:var(--ink-d);}
+
+/* Centre */
+.cz{display:flex;align-items:center;justify-content:center;gap:32px;position:relative;}
+.pile{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.plbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-d);font-weight:700;}
+#dp{width:82px;height:118px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .25s var(--easeOut);}
+#dp:hover{transform:translateY(-7px) rotateX(12deg) rotateY(-5deg);}
+#dp.off{opacity:.4;cursor:not-allowed;pointer-events:none;}
+.sl{position:absolute;inset:0;border-radius:14px;background:radial-gradient(circle at 30% 22%,rgba(212,168,42,.3),transparent 44%),repeating-linear-gradient(115deg,#1c130b 0,#211609 2px,#170f07 4px),linear-gradient(160deg,#241608,#0f0904);border:3px solid var(--brass);}
+.sl:nth-child(1){transform:translateZ(-8px) translate(-2px,2px);opacity:.5;}
+.sl:nth-child(2){transform:translateZ(-4px) translate(-1px,1px);opacity:.72;}
+.sl:nth-child(3){transform:translateZ(0);}
+.dlbl{text-align:center;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-style:italic;font-weight:900;color:var(--gold-l);font-size:15px;transform:rotate(-10deg);text-shadow:0 0 8px rgba(212,168,42,.5),1px 1px 0 #000;}
+#disc{width:82px;height:118px;position:relative;}
+.dind{font-size:22px;color:var(--gold);filter:drop-shadow(0 2px 3px rgba(0,0,0,.1));}
+
+/* Card */
+.card{width:82px;height:118px;border-radius:14px;border:3px solid var(--brass);display:flex;align-items:center;justify-content:center;position:relative;user-select:none;flex-shrink:0;overflow:hidden;box-shadow:0 1px 0 #7a5824,0 2px 0 #6a4c1e,0 3px 0 #5a3e16,0 4px 0 #4a3210,0 5px 0 #3a260a,0 18px 28px rgba(0,0,0,.18),inset 0 0 0 1px rgba(212,168,42,.18);}
+.card::before{content:'';position:absolute;inset:0;border-radius:11px;background:radial-gradient(ellipse 70px 38px at 26% 14%,rgba(255,255,255,.42),transparent 56%);pointer-events:none;}
+.card .face{font-weight:900;font-style:italic;font-size:30px;background:linear-gradient(160deg,#fff8e8,#f0d089 45%,#8a652a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4));transform:rotate(-12deg);line-height:1;z-index:1;position:relative;}
+.card .cr{position:absolute;font-size:11px;font-weight:800;background:linear-gradient(160deg,#fff8e8,#d9b15c);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 1px rgba(0,0,0,.4));z-index:1;}
+.card .cr.tl{top:7px;left:8px;}.card .cr.br{bottom:7px;right:8px;transform:rotate(180deg);}
+.c-red{background:radial-gradient(circle at 30% 18%,#d44e3a,#7a1e10 80%);}
+.c-yel{background:radial-gradient(circle at 30% 18%,#c99b2e,#7a5708 80%);}
+.c-grn{background:radial-gradient(circle at 30% 18%,#32845a,#0f4228 80%);}
+.c-blu{background:radial-gradient(circle at 30% 18%,#3368a8,#122d60 80%);}
+.c-wild{background:conic-gradient(from 90deg,#7a1e10 0deg,#7a5708 90deg,#0f4228 180deg,#122d60 270deg,#7a1e10 360deg);}
+.ctag{position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:9px;padding:2px 8px;border-radius:7px;font-weight:800;color:#fff;white-space:nowrap;}
+
+/* Player hand */
+.pzone{padding:8px 0 14px;display:flex;flex-direction:column;align-items:center;gap:6px;perspective:700px;perspective-origin:50% 115%;}
+.pinfo{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;}
+.pnm{font-weight:800;font-size:13px;}
+.ttag{font-size:11px;background:linear-gradient(180deg,var(--gold-l),var(--brass));color:#fff;padding:2px 9px;border-radius:8px;font-weight:800;animation:pulse 1.4s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+#hand{display:flex;justify-content:center;padding:16px 8px 10px;overflow-x:auto;max-width:100vw;gap:0;}
+.hc{margin-left:-30px;cursor:pointer;transform-origin:50% 125%;will-change:transform;}
+.hc:first-child{margin-left:0;}
+.hc.play .card{box-shadow:0 1px 0 #7a5824,0 2px 0 #6a4c1e,0 3px 0 #5a3e16,0 4px 0 #4a3210,0 18px 28px rgba(0,0,0,.2),0 0 0 3px var(--gold-l),0 0 22px rgba(212,168,42,.4);}
+.hc.gray{filter:brightness(.52) saturate(.38);cursor:not-allowed;}
+.shint{font-size:11px;color:var(--ink-d);opacity:.6;}
+.arow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;}
+.ab{background:#f8f4ec;border:1.5px solid rgba(154,112,48,.22);color:var(--ink);padding:8px 16px;border-radius:11px;cursor:pointer;font-weight:700;font-size:12px;transition:.15s;}
+.ab:hover{border-color:var(--gold);}
+.ab:disabled{opacity:.38;cursor:not-allowed;}
+.unob{background:linear-gradient(180deg,#ff6a4d,var(--red));border:none;color:#fff;font-weight:900;font-size:14px;padding:9px 20px;border-radius:28px;cursor:pointer;box-shadow:0 8px 18px rgba(226,65,43,.38);animation:ubp .9s infinite;}
+@keyframes ubp{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+
+/* Log */
+#logBox{position:absolute;top:8px;right:10px;width:200px;max-height:110px;overflow-y:auto;background:rgba(255,255,255,.92);border:1px solid rgba(154,112,48,.14);border-radius:11px;padding:7px 9px;font-size:10.5px;color:var(--ink-d);line-height:1.55;box-shadow:0 4px 16px rgba(0,0,0,.07);transition:opacity .25s,transform .25s var(--easeOut);}
+#logBox.lh{opacity:0;pointer-events:none;transform:translateY(-6px);}
+
+/* Animations */
+@keyframes discIn{0%{transform:scale(.38) rotateX(-18deg) rotateZ(-22deg);opacity:0;}60%{transform:scale(1.06) rotateX(4deg) rotateZ(4deg);opacity:1;}100%{transform:scale(1);opacity:1;}}
+.da{animation:discIn .36s var(--easeOut) both;}
+@keyframes shk{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+.shk{animation:shk .3s;}
+
+/* Picker */
+.pbg{position:fixed;inset:0;background:rgba(0,0,0,.22);display:flex;align-items:center;justify-content:center;z-index:60;backdrop-filter:blur(4px);}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:20px;background:#fff;border-radius:20px;box-shadow:0 18px 50px rgba(0,0,0,.15);}
+.pcol{width:88px;height:88px;border-radius:16px;border:3px solid #fff;cursor:pointer;box-shadow:0 10px 20px rgba(0,0,0,.18);transition:transform .18s var(--easeOut);}
+.pcol:hover{transform:scale(1.07) translateY(-3px);}
+
+/* Winner */
+.wbg{position:fixed;inset:0;background:rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;z-index:70;backdrop-filter:blur(6px);}
+.wbox{background:#fff;border-radius:22px;padding:32px 28px;box-shadow:0 24px 60px rgba(0,0,0,.16);text-align:center;}
+.wtitle{font-size:28px;font-weight:900;color:var(--red);font-style:italic;}
+.wsub{font-size:14px;color:var(--ink-d);margin-top:6px;}
+
+/* Footer */
+.ftr{position:fixed;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:6px;padding:5px 0 6px;background:rgba(255,255,255,.88);border-top:1px solid rgba(154,112,48,.1);font-size:11px;color:#7a6a50;z-index:999;pointer-events:none;}
+
+/* ── ROSA Card ── */
+.captcha-overlay{position:fixed;inset:0;background:rgba(18,25,44,.45);z-index:9999;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:14px;}
+.captcha-overlay.open{display:flex;}
+.captcha-box{background:#fff;border-radius:20px;width:100%;max-width:430px;box-shadow:0 16px 56px rgba(0,0,0,.22);overflow:hidden;animation:cIn .26s cubic-bezier(.34,1.56,.64,1);}
+@keyframes cIn{from{opacity:0;transform:scale(.88) translateY(16px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.c-header{background:#0077FF;padding:14px 18px;display:flex;align-items:center;gap:12px;}
+.vk-logo-c{width:38px;height:38px;flex-shrink:0;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.vk-logo-c span{font-size:26px;font-weight:900;color:var(--brand-accent);}
+.c-brand{color:#fff;font-size:15px;font-weight:700;line-height:1.2;}
+.c-brand-sub{color:rgba(255,255,255,.65);font-size:9px;letter-spacing:.08em;text-transform:uppercase;margin-top:1px;}
+.c-shield{width:30px;height:30px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;}
+.c-filters{display:flex;gap:5px;padding:9px 14px;background:#F8F9FA;border-bottom:1px solid #E8EBF0;flex-wrap:wrap;}
+.fbadge{display:flex;align-items:center;gap:3px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.03em;text-transform:uppercase;background:#EAECF0;color:#9CA3AF;transition:all .28s;border:1px solid transparent;}
+.fbadge.active{background:#EFF6FF;color:#0077FF;border-color:#BFDBFE;}
+.fbadge.pass{background:#E8F7EF;color:#1A7A4A;border-color:#BBF7D0;}
+.fbadge.fail{background:#FDEAEA;color:#B02020;border-color:#FECACA;}
+.fbadge .fd{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.c-chat{height:200px;overflow-y:auto;padding:14px;background:#F2F3F5;display:flex;flex-direction:column;gap:9px;}
+.c-chat::-webkit-scrollbar{width:3px;}.c-chat::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px;}
+.bubble{max-width:84%;padding:9px 13px;border-radius:14px;font-size:13px;line-height:1.55;animation:bIn .2s ease;}
+@keyframes bIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.bubble.bot{background:#fff;color:#12192C;border-bottom-left-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.07);align-self:flex-start;}
+.bubble.user{background:#0077FF;color:#fff;border-bottom-right-radius:3px;align-self:flex-end;}
+.bubble.bot .bsender{font-size:9px;font-weight:700;color:#0077FF;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px;}
+.bubble.sys{background:rgba(0,0,0,.05);color:#8A96A8;font-size:10px;text-align:center;padding:4px 10px;align-self:center;max-width:100%;border-radius:8px;}
+.typing-dots{display:flex;gap:4px;align-items:center;padding:3px 0;}
+.typing-dots span{width:6px;height:6px;border-radius:50%;background:#aaa;animation:dotB 1.2s infinite ease-in-out;}
+.typing-dots span:nth-child(2){animation-delay:.2s;}.typing-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes dotB{0%,80%,100%{transform:scale(.7);opacity:.5;}40%{transform:scale(1);opacity:1;}}
+.c-status{padding:7px 14px;background:#fff;border-top:1px solid #E8EBF0;border-bottom:1px solid #E8EBF0;display:flex;align-items:center;gap:7px;font-size:11px;color:#8A96A8;}
+.cdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;transition:background .3s;}
+.cdot.idle{background:#D1D5DB;}.cdot.thinking{background:#F59E0B;animation:cp 1s infinite;}.cdot.success{background:#1A7A4A;}.cdot.fail{background:#B02020;}
+@keyframes cp{0%,100%{opacity:1;}50%{opacity:.3;}}
+.c-input-area{padding:10px 14px;background:#fff;display:flex;gap:9px;align-items:center;}
+.c-input{flex:1;padding:9px 14px;border:1.5px solid #E2E6ED;border-radius:22px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;background:#F2F3F5;}
+.c-input:focus{border-color:#0077FF;background:#fff;}
+.c-send{width:38px;height:38px;border-radius:50%;background:#0077FF;color:#fff;border:none;cursor:pointer;font-size:15px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+.c-send:hover{background:#005FCC;}.c-send:disabled{background:#D1D5DB;cursor:not-allowed;}
+.c-result{padding:22px 20px 16px;text-align:center;display:none;}.c-result.show{display:block;}
+.r-icon{font-size:42px;margin-bottom:10px;}.r-title{font-size:17px;font-weight:700;margin-bottom:5px;}.r-desc{font-size:12px;color:#8A96A8;line-height:1.5;white-space:pre-line;}
+.r-bar{height:3px;border-radius:2px;margin:12px 0 3px;animation:fillB 1s ease forwards;}
+.r-bar.success{background:#1A7A4A;}.r-bar.fail{background:#B02020;}
+@keyframes fillB{from{width:0}to{width:100%}}
+.r-btn{margin-top:14px;padding:10px 28px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-family:inherit;font-weight:600;}
+.r-btn.success{background:#1A7A4A;color:#fff;}.r-btn.fail{background:#0077FF;color:#fff;}
+.secured-badge{display:flex;align-items:center;justify-content:center;gap:7px;padding:8px 0;font-size:11px;color:#8A96A8;border-top:1px solid #E8EBF0;background:#F8F9FA;}
+.sec-vk{width:18px;height:18px;border-radius:5px;background:#0077FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sec-vk span{font-size:12px;font-weight:900;color:var(--brand-on-accent);}
+.secured-badge strong{color:#0077FF;font-weight:700;}
+.c-footer{padding:8px 16px;background:#F0F2F5;border-top:1px solid #E8EBF0;display:flex;align-items:center;justify-content:space-between;}
+.c-powered{font-size:10px;color:#8A96A8;display:flex;align-items:center;gap:4px;}.c-powered strong{color:#0077FF;}
+.c-cancel{font-size:11px;color:#8A96A8;background:none;border:none;cursor:pointer;padding:3px 7px;border-radius:5px;}
+.c-cancel:hover{background:#E5E7EB;}
+.del-rec-btn{margin-top:8px;width:100%;padding:7px;border-radius:9px;border:1.5px dashed rgba(180,60,60,.3);background:rgba(180,60,60,.04);color:#b02020;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s;}
+.del-rec-btn:hover{background:rgba(180,60,60,.1);}
+@media(max-width:480px){.c-chat{height:170px;}.captcha-box{border-radius:16px;}}
+
+@media(max-width:480px){.card{width:66px;height:96px;}.card .face{font-size:23px;}#dp,#disc{width:66px;height:96px;}}
+
+/* ── Landscape mode ── */
+@media (orientation:landscape) and (max-height:500px){
+  .screen{padding:8px 16px;justify-content:flex-start;overflow-y:auto;}
+  .panel{max-width:100%;padding:12px 16px;}
+  .logo-wrap{transform:rotate(-2deg) scale(.75);margin-bottom:-10px;}
+  .topbar{padding:4px 12px;}
+  .table{grid-template-rows:auto 1fr auto;padding:2px 6px;}
+  .opps{gap:8px;padding:2px 6px;}
+  .opp{min-width:110px;max-width:160px;padding:5px 8px;}
+  .cz{gap:18px;}
+  .card,.card-fan,.fc-card{transform-origin:center;}
+  .card{width:60px;height:86px;}
+  #dp,#disc{width:60px;height:86px;}
+  .card .face{font-size:21px;}
+  .pzone{padding:4px 0 8px;gap:4px;}
+  #hand{padding:8px 6px 8px;}
+  .hc{margin-left:-26px;}
+  .ftr{display:none;}
+}
+@media (orientation:landscape) and (max-height:400px){
+  .opp-fan-wrap{height:36px;}
+  .ocard-3d{width:18px;height:26px;}
+}
+
+/* ── Realistic opponent card fan ── */
+.opp-fan-wrap{
+  position:relative;width:100%;height:60px;margin-top:4px;overflow:visible;
+}
+.ocard-3d{
+  position:absolute;bottom:0;
+  width:26px;height:38px;
+  border-radius:5px;
+  background:
+    radial-gradient(circle at 28% 20%,rgba(212,168,42,.25),transparent 44%),
+    repeating-linear-gradient(110deg,#1c130b 0,#211609 2px,#170f07 4px),
+    linear-gradient(155deg,#231507,#0f0904);
+  border:2px solid #9a7030;
+  box-shadow:0 1px 0 #7a5824,0 2px 0 #5a3e16,0 4px 8px rgba(0,0,0,.4),inset 0 0 0 1px rgba(212,168,42,.1);
+  transform-origin:50% 110%;
+}
+.ocard-3d .card-back-lbl{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-style:italic;font-weight:900;font-size:5px;line-height:1.1;text-align:center;overflow-wrap:normal;color:rgba(212,168,42,.55);
+  transform:rotate(-10deg);
+}
+.opp-cnt-badge{
+  font-size:13px;font-weight:900;color:var(--ink);letter-spacing:.3px;
+  display:flex;align-items:center;gap:4px;justify-content:center;margin-top:2px;
+}
+.cnt-num{font-size:18px;font-weight:900;color:var(--gold);line-height:1;}
+
+/* ── Pass-device screen ── */
+.pass-screen{
+  position:fixed;inset:0;z-index:200;
+  background:linear-gradient(135deg,#1a1208,#2a1e10);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:20px;text-align:center;padding:32px;
+}
+.pass-screen.hidden{display:none!important;}
+.pass-avatar{
+  width:90px;height:90px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold-l),var(--brass));
+  display:flex;align-items:center;justify-content:center;
+  font-size:38px;font-weight:900;color:#fff;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+  text-transform:uppercase;
+}
+.pass-title{font-size:22px;font-weight:900;color:#fff;margin:0;}
+.pass-sub{font-size:14px;color:rgba(255,255,255,.55);margin:0;}
+.pass-divider{width:60px;height:2px;background:rgba(212,168,42,.3);border-radius:2px;}
+.reveal-btn{
+  background:linear-gradient(180deg,var(--gold-l),var(--brass));
+  border:none;color:#1a1208;font-weight:900;font-size:16px;
+  padding:14px 36px;border-radius:14px;cursor:pointer;letter-spacing:.5px;
+  box-shadow:0 8px 20px rgba(154,112,48,.4);
+  animation:revPulse 1.6s infinite;
+}
+@keyframes revPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.03);}}
+</style>
+</head>
+<body>
+
+<!-- SETUP -->
+<div id="setupScreen" class="screen">
+  <div style="text-align:center;margin-bottom:14px;">
+    <div style="display:flex;justify-content:center;">
+      <div class="logo-wrap">
+        <div class="uno-icon">
+          <div class="iface"></div>
+          <div class="uno-txt">ROSA<br>Card</div>
+          <div class="card-fan">
+            <div class="fc-card" style="background:#2d7de0;left:0;transform:rotate(-30deg);">+2</div>
+            <div class="fc-card" style="background:conic-gradient(from 90deg,#c01a10 0 90deg,#c99b2e 90deg 180deg,#0f4228 180deg 270deg,#122d60 270deg);left:16px;transform:rotate(-13deg);"></div>
+            <div class="fc-card" style="background:#0f4228;left:33px;transform:rotate(3deg);">⟲</div>
+            <div class="fc-card" style="background:#111;left:52px;transform:rotate(19deg);">+4</div>
+          </div>
+        </div>
+        <div class="vk-badge-logo"><span aria-label="ROSA Card">R</span>
+        </div>
+      </div>
+    </div>
+    <div class="tagline" id="G_tagline"></div>
+  </div>
+  <div class="panel">
+    <div class="flabel">언어 / Language</div>
+    <div class="lang-row" id="langRow"></div>
+
+    <div class="flabel" id="G_lNick"></div>
+    <input id="nickIn" class="nick-in" maxlength="10">
+
+    <div class="flabel" id="G_lOpp"></div>
+    <!-- Opponent type toggle -->
+    <div class="brow" style="margin-bottom:7px;">
+      <button class="cb on" id="modeAI" onclick="setMode('ai')"></button>
+      <button class="cb" id="modeHuman" onclick="setMode('human')"></button>
+    </div>
+    <div class="brow" id="oppRow">
+      <button class="cb" data-v="1" id="G_opp1"></button>
+      <button class="cb on" data-v="2" id="G_opp2"></button>
+      <button class="cb" data-v="3" id="G_opp3"></button>
+    </div>
+    <!-- Human player names (shown only in human mode) -->
+    <div id="humanNames" class="hidden">
+      <div id="humanNameFields"></div>
+    </div>
+
+    <div class="flabel" id="G_lDiff"></div>
+    <div class="brow" id="diffRow">
+      <button class="cb" data-v="1">1</button>
+      <button class="cb" data-v="2">2</button>
+      <button class="cb on" data-v="3">3</button>
+      <button class="cb" data-v="4">4</button>
+      <button class="cb" data-v="5">5</button>
+      <button class="cb cb-adapt" data-v="6" id="G_adaptBtn"></button>
+    </div>
+    <div id="adaptBox" class="adapt-bar hidden"></div>
+
+    <div class="flabel" id="G_lDelay"></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:2px;">
+      <input id="delaySlider" type="range" min="0" max="5000" step="100" value="1000" style="flex:1;accent-color:var(--gold);cursor:pointer;">
+      <span id="delayVal" style="font-size:13px;font-weight:800;color:var(--gold);min-width:70px;text-align:right;"></span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--ink-d);padding:0 2px;">
+      <span id="G_noDelay"></span><span id="G_s5"></span>
+    </div>
+
+    <button class="go-btn" id="startBtn"></button>
+    <div class="howto-link" id="howtoLink"></div>
+    <div class="algo-note" id="algoNote"></div>
+  </div>
+</div>
+
+<!-- HOWTO -->
+<div id="howtoModal" class="mo-bg hidden">
+  <div class="mo-box" id="howtoBox"></div>
+</div>
+
+<!-- GAME -->
+<div id="game" class="hidden">
+  <div class="topbar">
+    <div class="mini-logo">
+      <div class="mini-uno">
+        <div class="iface"></div>
+        <div class="mini-uno-txt">ROSA<br>Card</div>
+        <div class="mini-fan">
+          <div class="mfc" style="background:#2d7de0;left:0;transform:rotate(-28deg);">+2</div>
+          <div class="mfc" style="background:conic-gradient(from 90deg,#c01a10 0 90deg,#c99b2e 90deg 180deg,#0f4228 180deg 270deg,#122d60 270deg);left:9px;transform:rotate(-10deg);"></div>
+          <div class="mfc" style="background:#0f4228;left:19px;transform:rotate(5deg);">⟲</div>
+          <div class="mfc" style="background:#111;left:29px;transform:rotate(20deg);">+4</div>
+        </div>
+      </div>
+      <div class="mini-vk-b"><span aria-label="ROSA Card">R</span>
+      </div>
+    </div>
+    <div class="meta-txt" id="topMeta"></div>
+    <div class="tbr">
+      <div class="ai-pill hidden" id="aiPill"><span class="led"></span><span id="aiTxt">AI</span></div>
+      <button class="ib on" id="logBtn"></button>
+      <button class="ib" id="quitBtn"></button>
+    </div>
+  </div>
+  <div class="table">
+    <div class="opps" id="oppsRow"></div>
+    <div class="cz">
+      <div class="pile">
+        <div class="plbl" id="G_deck"></div>
+        <div id="dp"><div class="sl"></div><div class="sl"></div><div class="sl"></div><div class="dlbl">ROSA<br>Card</div></div>
+      </div>
+      <div class="dind" id="dirInd">⟳</div>
+      <div class="pile">
+        <div class="plbl" id="G_disc"></div>
+        <div id="disc"></div>
+      </div>
+      <div id="logBox"></div>
+    </div>
+    <div class="pzone">
+      <div class="pinfo">
+        <div class="pnm" id="pname"></div>
+        <div id="ttag" class="ttag hidden"></div>
+        <button class="unob hidden" id="unoBtn">UNO! 🔴</button>
+      </div>
+      <div id="hand"></div>
+      <div class="shint" id="shint" style="opacity:0;"></div>
+      <div class="arow">
+        <button class="ab hidden" id="drawBtn"></button>
+        <button class="ab hidden" id="passBtn"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pass-device screen -->
+<div class="pass-screen hidden" id="passScreen">
+  <div class="pass-avatar" id="passAvatar">?</div>
+  <h2 class="pass-title" id="passTitle"></h2>
+  <p class="pass-sub" id="passSub"></p>
+  <div class="pass-divider"></div>
+  <button class="reveal-btn" id="revealBtn"></button>
+</div>
+
+<!-- ROSA Card Overlay -->
+<div class="captcha-overlay" id="captchaOverlay">
+  <div class="captcha-box">
+    <div class="c-header">
+      <div class="vk-logo-c"><span aria-label="ROSA Card">R</span></div>
+      <div style="flex:1"><div class="c-brand">ROSA Card</div><div class="c-brand-sub">Human Verification System v4.0</div></div>
+      <div class="c-shield">🛡</div>
+    </div>
+    <div class="c-filters">
+      <div class="fbadge" id="fb-time"><span class="fd"></span>시간필터</div>
+      <div class="fbadge" id="fb-ks"><span class="fd"></span>타자간격</div>
+      <div class="fbadge" id="fb-paste"><span class="fd"></span>복붙감지</div>
+      <div class="fbadge" id="fb-ddos"><span class="fd"></span>연타방지</div>
+      <div class="fbadge" id="fb-ai"><span class="fd"></span>AI맥락</div>
+    </div>
+    <div id="chatSection">
+      <div class="c-chat" id="cChat"></div>
+      <div class="c-status"><div class="cdot idle" id="cDot"></div><span id="cStatusTxt">ROSA Card가 대화를 분석합니다</span></div>
+      <div class="c-input-area">
+        <input type="text" class="c-input" id="cInput" placeholder="메시지를 입력하세요..." maxlength="300" autocomplete="off">
+        <button class="c-send" id="cSend">&#10148;</button>
+      </div>
+    </div>
+    <div class="c-result" id="cResult">
+      <div class="r-icon" id="rIcon"></div>
+      <div class="r-title" id="rTitle"></div>
+      <div class="r-desc" id="rDesc"></div>
+      <div class="r-bar" id="rBar"></div>
+      <button class="r-btn" id="rBtn"></button>
+    </div>
+    <div class="secured-badge">
+      <div class="sec-vk"><span aria-label="ROSA Card">R</span></div>
+      <span>🔒</span><span>Secured by</span><strong>ROSA Card</strong>
+    </div>
+    <div class="c-footer">
+      <div class="c-powered"><span>Powered by </span><strong>ROSA Card</strong><span>&nbsp;AI Engine v4.0 · 5-Layer</span></div>
+      <button class="c-cancel" id="cCancelBtn">취소</button>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="ftr">
+
+  <span><strong style="color:#0077FF;">ROSA Card</strong> · © 2026 뽀얀 · Apache 2.0 · <a href="/rosa-card-source.zip" download style="color:#0077FF;">소스코드 다운로드</a></span>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   TRANSLATIONS
+═══════════════════════════════════════════════════════ */
+const T9N = {
+  ko:{flag:'🇰🇷',name:'한국어',tagline:'ROSA Card',lNick:'닉네임',nickPh:'닉네임 입력',lOpp:'상대 AI 수',opp1:'1명(1:1)',opp2:'2명(1:2)',opp3:'3명(1:3)',lDiff:'AI 난이도',lDelay:'AI 딜레이',noDelay:'딜레이 없음',s5:'5초',dfmt:ms=>ms===0?'딜레이 없음':(ms/1000).toFixed(1)+'초',startBtn:'게임 시작',howtoLink:'📖 플레이 방법',eventOn:'이벤트 ✓',eventOff:'이벤트 ✗',quit:'나가기',deck:'덱',disc:'버린 카드',myTurn:'내 차례',swipe:'어느 방향으로든 스와이프해서 카드 내기',draw:'카드 뽑기',pass:'턴 넘기기',cw:'시계방향',ccw:'반시계방향',lvl:n=>`난이도 ${n}`,cards:n=>`${n}장`,meta:(d,n)=>`${d} · 덱 ${n}장`,winT:n=>`${n} 🎉 승리!`,winS:n=>`${n}이(가) 모든 카드를 소진했습니다.`,retry:'다시 하기',adaptBtn:'학습 🧠',adaptLbl:'학습 AI',adaptInfo:(lv,g,w)=>`🧠 학습 AI · Lv ${lv} | ${g}판 | 승률 ${w}%`,red:'빨강',yel:'노랑',grn:'초록',blu:'파랑',
+    algo:{1:'Lv1 · 랜덤 — 무작위 선택',2:'Lv2 · 기초 — 숫자 카드 우선',3:'Lv3 · 규칙 기반 — 위협 감지·와일드 절약',4:'Lv4 · 카운팅 — 덱 확률 추정',5:'Lv5 · MCTS-lite — 미니 시뮬레이션',6:'학습 AI 🧠 — 내 패턴 분석·자동 실력 조정'},
+    aiN:{1:'RANDOM',2:'BASIC',3:'HEURISTIC',4:'COUNTING',5:'MCTS'},
+    L:{start:(c,l)=>`게임 시작! 첫 카드: ${c} ${l}`,fs:'첫 카드 스킵!',fr:'첫 카드 리버스!',fd2:n=>`첫 카드 +2! ${n} 2장.`,skip:n=>`${n}: ⦸ 스킵!`,rev:n=>`${n}: ⟲ 리버스!`,d2:(n,v)=>`${n}: +2 → ${v} 2장!`,d4:(n,v,c)=>`${n}: +4 → ${v} 4장! 색상 ${c}`,wild:(n,c)=>`${n}: ★ Wild → 색상 ${c}`,num:(n,c,v)=>`${n}: ${c} ${v}`,nc:n=>`${n}: 카드 없음 — 뽑고 패스.`,d1:n=>`${n}: 카드 1장 뽑음.`,rs:'덱 소진 — 섞었습니다.',uno:n=>`${n}: "UNO!" 선언!`,catch:(a,b)=>`🚨 ${a}이 ${b}의 UNO 누락 적발! +1장.`},
+    howto:`<h2>🃏 ROSA Card 플레이 방법</h2><p>목표: 손의 카드를 가장 먼저 모두 소진하세요!</p><h3>기본 규칙</h3><div class="rule"><span class="em">🎯</span><span>버린 더미 위 카드와 <b>색상 또는 숫자/기호</b>가 일치하는 카드를 내세요.</span></div><div class="rule"><span class="em">↕</span><span>카드를 <b>어느 방향으로든 스와이프</b>해서 내세요.</span></div><div class="rule"><span class="em">🤚</span><span>낼 카드 없으면 <b>카드 뽑기</b> → 그래도 없으면 <b>턴 넘기기</b>.</span></div><h3>특수 카드</h3><div class="rule"><span class="em">⦸</span><span><b>스킵</b>: 다음 차례 건너뜀.</span></div><div class="rule"><span class="em">⟲</span><span><b>리버스</b>: 진행 방향 반전.</span></div><div class="rule"><span class="em">+2</span><span><b>드로우2</b>: 다음 플레이어 2장 뽑기+스킵.</span></div><div class="rule"><span class="em">★</span><span><b>와일드</b>: 원하는 색상 지정.</span></div><div class="rule"><span class="em">+4</span><span><b>와일드+4</b>: 색상 지정 + 다음 4장 + 스킵.</span></div><h3>UNO 선언 & 적발</h3><div class="rule"><span class="em">🔴</span><span>1장 남으면 <b>UNO! 버튼</b>을 눌러 선언하세요. 누락 시 상대가 먼저 누르면 +1장 패널티.</span></div><div class="rule"><span class="em">👀</span><span>AI가 1장 + 미선언 상태면 <b>UNO! 버튼</b>으로 적발 가능.</span></div><button class="mo-close" id="mcl">닫기</button>`
+  },
+  en:{flag:'🇺🇸',name:'English',tagline:'ROSA Card',lNick:'Nickname',nickPh:'Enter nickname',lOpp:'AI Opponents',opp1:'1 (1v1)',opp2:'2 (1v2)',opp3:'3 (1v3)',lDiff:'AI Difficulty',lDelay:'AI Delay',noDelay:'No delay',s5:'5 sec',dfmt:ms=>ms===0?'No delay':(ms/1000).toFixed(1)+' sec',startBtn:'Start Game',howtoLink:'📖 How to Play',eventOn:'Events ✓',eventOff:'Events ✗',quit:'Quit',deck:'DECK',disc:'DISCARD',myTurn:'My Turn',swipe:'Swipe any direction to play a card',draw:'Draw Card',pass:'Pass Turn',cw:'Clockwise',ccw:'Counter-CW',lvl:n=>`Level ${n}`,cards:n=>`${n} cards`,meta:(d,n)=>`${d} · Deck: ${n}`,winT:n=>`${n} 🎉 Wins!`,winS:n=>`${n} used all cards!`,retry:'Play Again',adaptBtn:'Adaptive 🧠',adaptLbl:'Adaptive AI',adaptInfo:(lv,g,w)=>`🧠 Adaptive · Lv ${lv} | ${g} games | Win ${w}%`,red:'Red',yel:'Yellow',grn:'Green',blu:'Blue',
+    algo:{1:'Lv1 · Random AI',2:'Lv2 · Basic rules',3:'Lv3 · Heuristic — threat detection',4:'Lv4 · Card counting',5:'Lv5 · MCTS-lite',6:'Adaptive AI 🧠 — learns your patterns'},
+    aiN:{1:'RANDOM',2:'BASIC',3:'HEURISTIC',4:'COUNTING',5:'MCTS'},
+    L:{start:(c,l)=>`Game start! First: ${c} ${l}`,fs:'First card: Skip!',fr:'First card: Reverse!',fd2:n=>`First card +2! ${n} draws 2.`,skip:n=>`${n}: ⦸ Skip!`,rev:n=>`${n}: ⟲ Reverse!`,d2:(n,v)=>`${n}: +2 → ${v} draws 2!`,d4:(n,v,c)=>`${n}: +4 → ${v} draws 4! Color: ${c}`,wild:(n,c)=>`${n}: ★ Wild → Color ${c}`,num:(n,c,v)=>`${n}: ${c} ${v}`,nc:n=>`${n}: No card — draw & pass.`,d1:n=>`${n}: Drew 1 card.`,rs:'Deck empty — reshuffled.',uno:n=>`${n}: "UNO!" declared!`,catch:(a,b)=>`🚨 ${a} caught ${b}'s UNO miss! +1 card.`},
+    howto:`<h2>🃏 How to Play ROSA Card</h2><p>Goal: First to use all cards wins!</p><h3>Basic Rules</h3><div class="rule"><span class="em">🎯</span><span>Play a card matching the top discard by <b>color or number/symbol</b>.</span></div><div class="rule"><span class="em">↕</span><span><b>Swipe any direction</b> to play a card.</span></div><div class="rule"><span class="em">🤚</span><span>No card? <b>Draw</b> one. Still can't play? <b>Pass Turn</b>.</span></div><h3>Special Cards</h3><div class="rule"><span class="em">⦸</span><span><b>Skip</b>: Next player loses their turn.</span></div><div class="rule"><span class="em">⟲</span><span><b>Reverse</b>: Flips play direction.</span></div><div class="rule"><span class="em">+2</span><span><b>Draw Two</b>: Next draws 2 and skips.</span></div><div class="rule"><span class="em">★</span><span><b>Wild</b>: Choose any color.</span></div><div class="rule"><span class="em">+4</span><span><b>Wild+4</b>: Choose color + next draws 4 + skip.</span></div><h3>UNO</h3><div class="rule"><span class="em">🔴</span><span>1 card left? Press <b>UNO!</b> or risk a penalty if caught.</span></div><div class="rule"><span class="em">👀</span><span>AI has 1 card and didn't call it? Press <b>UNO!</b> to catch them.</span></div><button class="mo-close" id="mcl">Close</button>`
+  },
+  ru:{flag:'🇷🇺',name:'Русский',tagline:'ROSA Card',lNick:'Никнейм',nickPh:'Введите никнейм',lOpp:'Противники ИИ',opp1:'1 (1×1)',opp2:'2 (1×2)',opp3:'3 (1×3)',lDiff:'Сложность ИИ',lDelay:'Задержка ИИ',noDelay:'Без задержки',s5:'5 сек',dfmt:ms=>ms===0?'Без задержки':(ms/1000).toFixed(1)+' сек',startBtn:'Начать игру',howtoLink:'📖 Как играть',eventOn:'События ✓',eventOff:'События ✗',quit:'Выйти',deck:'КОЛОДА',disc:'СБРОС',myTurn:'Мой ход',swipe:'Смахните в любую сторону',draw:'Взять карту',pass:'Пропустить ход',cw:'По часовой',ccw:'Против часовой',lvl:n=>`Уровень ${n}`,cards:n=>`${n} карт`,meta:(d,n)=>`${d} · Колода: ${n}`,winT:n=>`${n} 🎉 Победа!`,winS:n=>`${n} использовал все карты!`,retry:'Ещё раз',adaptBtn:'Адапт. 🧠',adaptLbl:'Адаптивный ИИ',adaptInfo:(lv,g,w)=>`🧠 Адапт. · Ур. ${lv} | ${g} игр | Победы ${w}%`,red:'Красный',yel:'Жёлтый',grn:'Зелёный',blu:'Синий',
+    algo:{1:'Ур.1 · Случайный ИИ',2:'Ур.2 · Базовые правила',3:'Ур.3 · Эвристика',4:'Ур.4 · Подсчёт карт',5:'Ур.5 · MCTS-lite',6:'Адаптивный ИИ 🧠 — анализирует вашу игру'},
+    aiN:{1:'СЛУЧ.',2:'БАЗОВ.',3:'ЭВРИСТ.',4:'ПОДСЧЁТ',5:'MCTS'},
+    L:{start:(c,l)=>`Игра! Первая карта: ${c} ${l}`,fs:'Первая: Пропуск!',fr:'Первая: Реверс!',fd2:n=>`Первая +2! ${n} берёт 2.`,skip:n=>`${n}: ⦸ Пропуск!`,rev:n=>`${n}: ⟲ Реверс!`,d2:(n,v)=>`${n}: +2 → ${v} берёт 2!`,d4:(n,v,c)=>`${n}: +4 → ${v} берёт 4! Цвет: ${c}`,wild:(n,c)=>`${n}: ★ Wild → Цвет ${c}`,num:(n,c,v)=>`${n}: ${c} ${v}`,nc:n=>`${n}: Нет карты — берёт и пасует.`,d1:n=>`${n}: Взял 1 карту.`,rs:'Колода пуста — перемешали.',uno:n=>`${n}: объявил "UNO!"`,catch:(a,b)=>`🚨 ${a} поймал ${b} без UNO! +1 карта.`},
+    howto:`<h2>🃏 Как играть в ROSA Card</h2><p>Цель: первым избавиться от всех карт!</p><h3>Основные правила</h3><div class="rule"><span class="em">🎯</span><span>Кладите карту, совпадающую по <b>цвету или числу/символу</b>.</span></div><div class="rule"><span class="em">↕</span><span><b>Смахните в любую сторону</b> чтобы сыграть карту.</span></div><div class="rule"><span class="em">🤚</span><span>Нет карты? <b>Возьмите одну</b>. Всё равно нет? <b>Пропустить ход</b>.</span></div><h3>Специальные карты</h3><div class="rule"><span class="em">⦸</span><span><b>Пропуск</b>: следующий пропускает.</span></div><div class="rule"><span class="em">⟲</span><span><b>Реверс</b>: меняет направление.</span></div><div class="rule"><span class="em">+2</span><span><b>+2</b>: следующий берёт 2 и пропускает.</span></div><div class="rule"><span class="em">★</span><span><b>Джокер</b>: любой цвет.</span></div><div class="rule"><span class="em">+4</span><span><b>+4</b>: выбор цвета + 4 карты + пропуск.</span></div><h3>UNO</h3><div class="rule"><span class="em">🔴</span><span>1 карта? Нажми <b>UNO!</b> иначе штраф.</span></div><div class="rule"><span class="em">👀</span><span>ИИ с 1 картой без объявления? Нажми <b>UNO!</b> чтобы поймать.</span></div><button class="mo-close" id="mcl">Закрыть</button>`
+  },
+  zh:{flag:'🇨🇳',name:'中文',tagline:'ROSA Card',lNick:'昵称',nickPh:'输入昵称',lOpp:'AI对手数',opp1:'1位(1v1)',opp2:'2位(1v2)',opp3:'3位(1v3)',lDiff:'AI难度',lDelay:'AI延迟',noDelay:'无延迟',s5:'5秒',dfmt:ms=>ms===0?'无延迟':(ms/1000).toFixed(1)+'秒',startBtn:'开始游戏',howtoLink:'📖 游戏规则',eventOn:'事件 ✓',eventOff:'事件 ✗',quit:'退出',deck:'牌堆',disc:'弃牌',myTurn:'我的回合',swipe:'向任意方向滑动出牌',draw:'摸牌',pass:'跳过回合',cw:'顺时针',ccw:'逆时针',lvl:n=>`难度 ${n}`,cards:n=>`${n}张`,meta:(d,n)=>`${d} · 牌堆: ${n}张`,winT:n=>`${n} 🎉 胜利！`,winS:n=>`${n} 打完了所有牌！`,retry:'再玩一次',adaptBtn:'自适应 🧠',adaptLbl:'自适应AI',adaptInfo:(lv,g,w)=>`🧠 自适应 · Lv ${lv} | ${g}局 | 胜率${w}%`,red:'红色',yel:'黄色',grn:'绿色',blu:'蓝色',
+    algo:{1:'Lv1 · 随机AI',2:'Lv2 · 基础规则',3:'Lv3 · 启发式',4:'Lv4 · 记牌',5:'Lv5 · MCTS-lite',6:'自适应AI 🧠 — 分析你的风格'},
+    aiN:{1:'随机',2:'基础',3:'启发式',4:'记牌',5:'MCTS'},
+    L:{start:(c,l)=>`游戏开始！第一张：${c} ${l}`,fs:'第一张：跳过！',fr:'第一张：反转！',fd2:n=>`第一张+2！${n}摸2张。`,skip:n=>`${n}: ⦸ 跳过！`,rev:n=>`${n}: ⟲ 反转！`,d2:(n,v)=>`${n}: +2 → ${v}摸2张！`,d4:(n,v,c)=>`${n}: +4 → ${v}摸4张！颜色：${c}`,wild:(n,c)=>`${n}: ★ Wild → 颜色${c}`,num:(n,c,v)=>`${n}: ${c} ${v}`,nc:n=>`${n}: 无牌，摸牌跳过。`,d1:n=>`${n}: 摸了1张。`,rs:'牌堆空，重洗。',uno:n=>`${n}: 宣告"UNO!"！`,catch:(a,b)=>`🚨 ${a}抓到${b}漏报！+1张。`},
+    howto:`<h2>🃏 ROSA Card玩法</h2><p>目标：最先打完所有手牌！</p><h3>基本规则</h3><div class="rule"><span class="em">🎯</span><span>出与弃牌堆顶牌<b>颜色或数字/符号</b>相同的牌。</span></div><div class="rule"><span class="em">↕</span><span><b>向任意方向滑动</b>出牌。</span></div><div class="rule"><span class="em">🤚</span><span>没牌可出？<b>摸牌</b>，还不行就<b>跳过回合</b>。</span></div><h3>特殊牌</h3><div class="rule"><span class="em">⦸</span><span><b>跳过</b>：下家跳过。</span></div><div class="rule"><span class="em">⟲</span><span><b>反转</b>：改变方向。</span></div><div class="rule"><span class="em">+2</span><span><b>+2</b>：下家摸2张并跳过。</span></div><div class="rule"><span class="em">★</span><span><b>万能牌</b>：选颜色。</span></div><div class="rule"><span class="em">+4</span><span><b>万能+4</b>：选色+下家摸4+跳过。</span></div><h3>UNO</h3><div class="rule"><span class="em">🔴</span><span>剩1张时按<b>UNO!</b>，否则被抓到要罚摸1张。</span></div><div class="rule"><span class="em">👀</span><span>AI剩1张未宣告？按<b>UNO!</b>抓住他。</span></div><button class="mo-close" id="mcl">关闭</button>`
+  },
+  kk:{flag:'🇰🇿',name:'Қазақша',tagline:'ROSA Card',lNick:'Лақап ат',nickPh:'Лақап атыңызды енгізіңіз',lOpp:'ЖС қарсыластар',opp1:'1 (1×1)',opp2:'2 (1×2)',opp3:'3 (1×3)',lDiff:'ЖС қиындығы',lDelay:'ЖС кідіріс',noDelay:'Кідіріссіз',s5:'5 сек',dfmt:ms=>ms===0?'Кідіріссіз':(ms/1000).toFixed(1)+' сек',startBtn:'Ойынды бастау',howtoLink:'📖 Ойын ережесі',eventOn:'Оқиғалар ✓',eventOff:'Оқиғалар ✗',quit:'Шығу',deck:'ДЕСТE',disc:'ЛАҚТЫРУ',myTurn:'Менің кезегім',swipe:'Кез келген бағытта сырғытыңыз',draw:'Карта алу',pass:'Кезекті өткізу',cw:'Сағат бойынша',ccw:'Сағатқа қарсы',lvl:n=>`Деңгей ${n}`,cards:n=>`${n} карта`,meta:(d,n)=>`${d} · Дестe: ${n}`,winT:n=>`${n} 🎉 Жеңді!`,winS:n=>`${n} барлық карталарды бітірді!`,retry:'Қайтадан',adaptBtn:'Үйрену 🧠',adaptLbl:'Үйренуші ЖС',adaptInfo:(lv,g,w)=>`🧠 Үйрену · Дең ${lv} | ${g} ойын | Жеңіс ${w}%`,red:'Қызыл',yel:'Сары',grn:'Жасыл',blu:'Көк',
+    algo:{1:'Дең.1 · Кездейсоқ',2:'Дең.2 · Негізгі',3:'Дең.3 · Эвристика',4:'Дең.4 · Санау',5:'Дең.5 · MCTS',6:'Үйренуші ЖС 🧠 — стиліңізге бейімделеді'},
+    aiN:{1:'КЕЗДЕЙС.',2:'НЕГІЗГІ',3:'ЭВРИСТ.',4:'САНАУ',5:'MCTS'},
+    L:{start:(c,l)=>`Ойын! Бірінші: ${c} ${l}`,fs:'Бірінші: Өткізу!',fr:'Бірінші: Кері!',fd2:n=>`Бірінші +2! ${n} 2 карта.`,skip:n=>`${n}: ⦸ Өткізу!`,rev:n=>`${n}: ⟲ Кері!`,d2:(n,v)=>`${n}: +2 → ${v} 2 карта!`,d4:(n,v,c)=>`${n}: +4 → ${v} 4 карта! Түс: ${c}`,wild:(n,c)=>`${n}: ★ Wild → Түс ${c}`,num:(n,c,v)=>`${n}: ${c} ${v}`,nc:n=>`${n}: Карта жоқ — алып өтеді.`,d1:n=>`${n}: 1 карта алды.`,rs:'Дестe бітті — аралас.',uno:n=>`${n}: "UNO!" жариялады!`,catch:(a,b)=>`🚨 ${a} ${b}-ды ұстады! +1 карта.`},
+    howto:`<h2>🃏 ROSA Card ережелері</h2><p>Мақсат: барлық картаңызды бірінші бітіріңіз!</p><h3>Негізгі ережелер</h3><div class="rule"><span class="em">🎯</span><span><b>Түс немесе сан/белгі</b> бойынша сәйкес картаны ойнаңыз.</span></div><div class="rule"><span class="em">↕</span><span>Карта ойнау үшін <b>кез келген бағытта сырғытыңыз</b>.</span></div><div class="rule"><span class="em">🤚</span><span>Карта жоқ па? <b>Алыңыз</b>. Әлі де жоқ? <b>Кезекті өткізу</b>.</span></div><h3>Арнайы карталар</h3><div class="rule"><span class="em">⦸</span><span><b>Өткізу</b>: келесі кезегін жіберіп алады.</span></div><div class="rule"><span class="em">⟲</span><span><b>Кері</b>: бағытты өзгертеді.</span></div><div class="rule"><span class="em">+2</span><span><b>+2</b>: келесі 2 алып, өткізіп алады.</span></div><div class="rule"><span class="em">★</span><span><b>Wild</b>: кез келген түс.</span></div><div class="rule"><span class="em">+4</span><span><b>+4</b>: түс + 4 карта + өткізу.</span></div><h3>UNO</h3><div class="rule"><span class="em">🔴</span><span>1 карта қалса <b>UNO!</b> басыңыз, болмаса +1 жаза.</span></div><div class="rule"><span class="em">👀</span><span>ЖС-та 1 карта, жариялаған жоқ? <b>UNO!</b> басып ұстаңыз.</span></div><button class="mo-close" id="mcl">Жабу</button>`
+  },
+  uz:{flag:'🇺🇿',name:"O'zbekcha",tagline:'ROSA Card',lNick:'Taxallus',nickPh:"Taxallusni kiriting",lOpp:'AI raqiblar',opp1:'1 (1:1)',opp2:'2 (1:2)',opp3:'3 (1:3)',lDiff:'AI qiyinligi',lDelay:'AI kechikishi',noDelay:'Kechikishsiz',s5:'5 son',dfmt:ms=>ms===0?'Kechikishsiz':(ms/1000).toFixed(1)+' son',startBtn:"O'yinni boshlash",howtoLink:'📖 Qoidalar',eventOn:'Voqealar ✓',eventOff:'Voqealar ✗',quit:'Chiqish',deck:'DASTA',disc:'TASHLANGAN',myTurn:'Mening navbatim',swipe:"Karta o'ynash uchun istalgan tomonga suring",draw:'Karta olish',pass:"Navbatni o'tkazish",cw:"Soat yo'nalishi",ccw:'Soatga qarshi',lvl:n=>`Daraja ${n}`,cards:n=>`${n} ta`,meta:(d,n)=>`${d} · Dasta: ${n}`,winT:n=>`${n} 🎉 G'alaba!`,winS:n=>`${n} barcha kartalarni tugatdi!`,retry:"Qayta o'ynash",adaptBtn:'Moslas. 🧠',adaptLbl:'Moslashuvchan AI',adaptInfo:(lv,g,w)=>`🧠 Moslas. · Daraja ${lv} | ${g} o'yin | G'alaba ${w}%`,red:'Qizil',yel:'Sariq',grn:'Yashil',blu:"Ko'k",
+    algo:{1:"Dar.1 · Tasodifiy",2:"Dar.2 · Asosiy",3:"Dar.3 · Evristika",4:"Dar.4 · Karta hisob",5:"Dar.5 · MCTS",6:"Moslashuvchan AI 🧠 — o'yin uslubingizga moslashadi"},
+    aiN:{1:'TASOD.',2:'ASOSIY',3:'EVRIST.',4:'HISOB',5:'MCTS'},
+    L:{start:(c,l)=>`O'yin! Birinchi: ${c} ${l}`,fs:'Birinchi: Skip!',fr:'Birinchi: Teskari!',fd2:n=>`Birinchi +2! ${n} 2 ta.`,skip:n=>`${n}: ⦸ Skip!`,rev:n=>`${n}: ⟲ Teskari!`,d2:(n,v)=>`${n}: +2 → ${v} 2 ta!`,d4:(n,v,c)=>`${n}: +4 → ${v} 4 ta! Rang: ${c}`,wild:(n,c)=>`${n}: ★ Wild → Rang ${c}`,num:(n,c,v)=>`${n}: ${c} ${v}`,nc:n=>`${n}: Karta yo'q — oldi va o'tdi.`,d1:n=>`${n}: 1 ta oldi.`,rs:'Dasta tugadi — aralashtirildi.',uno:n=>`${n}: "UNO!" e'lon!`,catch:(a,b)=>`🚨 ${a} ${b}ni ushladi! +1 karta.`},
+    howto:`<h2>🃏 ROSA Card qoidalari</h2><p>Maqsad: barcha kartalarni birinchi tugatish!</p><h3>Asosiy qoidalar</h3><div class="rule"><span class="em">🎯</span><span><b>Rang yoki raqam/belgi</b> mos keladigan kartani chiqaring.</span></div><div class="rule"><span class="em">↕</span><span>Karta o'ynash uchun <b>istalgan tomonga suring</b>.</span></div><div class="rule"><span class="em">🤚</span><span>Karta yo'qmi? <b>Oling</b>. Baribir yo'qmi? <b>Navbatni o'tkazish</b>.</span></div><h3>Maxsus kartalar</h3><div class="rule"><span class="em">⦸</span><span><b>Skip</b>: keyingi o'tkazib yuboradi.</span></div><div class="rule"><span class="em">⟲</span><span><b>Teskari</b>: yo'nalishni o'zgartiradi.</span></div><div class="rule"><span class="em">+2</span><span><b>+2</b>: keyingi 2 ta oladi va o'tkazadi.</span></div><div class="rule"><span class="em">★</span><span><b>Wild</b>: ixtiyoriy rang.</span></div><div class="rule"><span class="em">+4</span><span><b>+4</b>: rang + 4 ta + skip.</span></div><h3>UNO</h3><div class="rule"><span class="em">🔴</span><span>1 karta qolsa <b>UNO!</b> bosing, aks holda +1 jarima.</span></div><div class="rule"><span class="em">👀</span><span>AI da 1 karta va e'lon yo'q? <b>UNO!</b> bosib ushlang.</span></div><button class="mo-close" id="mcl">Yopish</button>`
+  },
+  ky:{flag:'🇰🇬',name:'Кыргызча',tagline:'ROSA Card',lNick:'Лакап ат',nickPh:'Лакап атыңызды киргизиңиз',lOpp:'ЖК каршылаштар',opp1:'1 (1×1)',opp2:'2 (1×2)',opp3:'3 (1×3)',lDiff:'ЖК кыйынчылыгы',lDelay:'ЖК кечигүү',noDelay:'Кечигүүсүз',s5:'5 сек',dfmt:ms=>ms===0?'Кечигүүсүз':(ms/1000).toFixed(1)+' сек',startBtn:'Оюнду баштоо',howtoLink:'📖 Оюн эрежелери',eventOn:'Окуялар ✓',eventOff:'Окуялар ✗',quit:'Чыгуу',deck:'ДАСТЕ',disc:'ТАШТАЛГАН',myTurn:'Менин кезегим',swipe:'Каалаган тарапка сүрүңүз',draw:'Карта алуу',pass:'Кезекти өткөрүү',cw:'Саат жүрүшү',ccw:'Саатка карши',lvl:n=>`Деңгээл ${n}`,cards:n=>`${n} карта`,meta:(d,n)=>`${d} · Дасте: ${n}`,winT:n=>`${n} 🎉 Жеңди!`,winS:n=>`${n} бардык карталарды бүтүрдү!`,retry:'Кайра ойноо',adaptBtn:'Үйрөнүү 🧠',adaptLbl:'Үйрөнүүчү ЖК',adaptInfo:(lv,g,w)=>`🧠 Үйрөнүү · Дең ${lv} | ${g} оюн | Жеңиш ${w}%`,red:'Кызыл',yel:'Сары',grn:'Жашыл',blu:'Көк',
+    algo:{1:'Дең.1 · Кокустук',2:'Дең.2 · Негизги',3:'Дең.3 · Эвристика',4:'Дең.4 · Эсеп',5:'Дең.5 · MCTS',6:'Үйрөнүүчү ЖК 🧠 — стилиңизге ылайыкталат'},
+    aiN:{1:'КОКУСТ.',2:'НЕГИЗГИ',3:'ЭВРИСТ.',4:'ЭСЕП',5:'MCTS'},
+    L:{start:(c,l)=>`Оюн! Биринчи: ${c} ${l}`,fs:'Биринчи: Өткөрүү!',fr:'Биринчи: Тескери!',fd2:n=>`Биринчи +2! ${n} 2 карта.`,skip:n=>`${n}: ⦸ Өткөрүү!`,rev:n=>`${n}: ⟲ Тескери!`,d2:(n,v)=>`${n}: +2 → ${v} 2 карта!`,d4:(n,v,c)=>`${n}: +4 → ${v} 4 карта! Түс: ${c}`,wild:(n,c)=>`${n}: ★ Wild → Түс ${c}`,num:(n,c,v)=>`${n}: ${c} ${v}`,nc:n=>`${n}: Карта жок — алып өтөт.`,d1:n=>`${n}: 1 карта алды.`,rs:'Дасте бүттү — аралашты.',uno:n=>`${n}: "UNO!" жарыялады!`,catch:(a,b)=>`🚨 ${a} ${b}ды кармады! +1 карта.`},
+    howto:`<h2>🃏 ROSA Card эрежелери</h2><p>Максат: бардык карталарыңызды биринчи бүтүрүңүз!</p><h3>Негизги эрежелер</h3><div class="rule"><span class="em">🎯</span><span><b>Түс же сан/белги</b> дал келген картаны ойноңуз.</span></div><div class="rule"><span class="em">↕</span><span>Карта ойноо үчүн <b>каалаган тарапка сүрүңүз</b>.</span></div><div class="rule"><span class="em">🤚</span><span>Карта жокпу? <b>Алыңыз</b>. Дагы жокпу? <b>Кезекти өткөрүү</b>.</span></div><h3>Атайын карталар</h3><div class="rule"><span class="em">⦸</span><span><b>Өткөрүү</b>: кийинки өткөрүп жиберет.</span></div><div class="rule"><span class="em">⟲</span><span><b>Тескери</b>: багытты өзгөртөт.</span></div><div class="rule"><span class="em">+2</span><span><b>+2</b>: кийинки 2 алат жана өткөрөт.</span></div><div class="rule"><span class="em">★</span><span><b>Wild</b>: каалаган түс.</span></div><div class="rule"><span class="em">+4</span><span><b>+4</b>: түс + 4 карта + өткөрүү.</span></div><h3>UNO</h3><div class="rule"><span class="em">🔴</span><span>1 карта калса <b>UNO!</b> басыңыз, болбосо +1 жаза.</span></div><div class="rule"><span class="em">👀</span><span>ЖКда 1 карта, жарыяламаган? <b>UNO!</b> басып кармаңыз.</span></div><button class="mo-close" id="mcl">Жабуу</button>`
+  }
+};
+
+/* ═══════════════════════════════════════════════════════
+   GAME STATE
+═══════════════════════════════════════════════════════ */
+const COLORS=['red','yel','grn','blu'];
+const CHEX={red:'#e2412b',yel:'#f2c12e',grn:'#2fae5c',blu:'#2d7de0'};
+
+let LANG='en', L=T9N.en;
+let NUM_AI=2, DIFF=3, NICK='Player', AI_DELAY=1000;
+let logOn=true;
+let S=null;
+let timers=[];
+
+/* ═══════════════════════════════════════════════════════
+   LANGUAGE
+═══════════════════════════════════════════════════════ */
+function detectLang(){
+  const code=((navigator.languages||[navigator.language||'en'])[0]||'en').toLowerCase().split('-')[0];
+  return T9N[code]?code:'en';
+}
+
+function setLang(code){
+  LANG=code; L=T9N[code];
+  document.querySelectorAll('.lb').forEach(b=>b.classList.toggle('on',b.dataset.l===code));
+  applyLang();
+}
+
+function applyLang(){
+  function set(id,val){const e=document.getElementById(id);if(e&&val!==undefined)e.textContent=val;}
+  set('G_tagline',L.tagline);
+  set('G_lNick',L.lNick);
+  const ni=document.getElementById('nickIn');if(ni)ni.placeholder=L.nickPh;
+  set('G_lOpp',L.lOpp);
+  set('G_opp1',L.opp1);set('G_opp2',L.opp2);set('G_opp3',L.opp3);
+  set('G_lDiff',L.lDiff);
+  set('G_adaptBtn',L.adaptBtn);
+  set('G_lDelay',L.lDelay);
+  set('G_noDelay',L.noDelay);set('G_s5',L.s5);
+  set('delayVal',L.dfmt(AI_DELAY));
+  set('startBtn',L.startBtn);
+  set('howtoLink',L.howtoLink);
+  set('G_deck',L.deck);set('G_disc',L.disc);
+  set('logBtn',logOn?L.eventOn:L.eventOff);
+  set('quitBtn',L.quit);
+  set('ttag',L.myTurn);
+  set('shint',L.swipe);
+  set('drawBtn',L.draw);
+  set('passBtn',L.pass);
+  // algo note
+  set('algoNote',L.algo[DIFF]);
+  // mode buttons
+  const mAI=document.getElementById('modeAI');
+  const mHU=document.getElementById('modeHuman');
+  if(mAI) mAI.textContent='🤖 AI';
+  if(mHU) mHU.textContent='👤 사람';
+  // update adaptive box
+  updateAdaptBox();
+}
+
+/* ═══════════════════════════════════════════════════════
+   INIT UI
+═══════════════════════════════════════════════════════ */
+// Build lang buttons
+LANG=detectLang(); L=T9N[LANG];
+const lr=document.getElementById('langRow');
+['ko','en','ru','zh','kk','uz','ky'].forEach(code=>{
+  const b=document.createElement('button');
+  b.className='lb'+(code===LANG?' on':'');
+  b.dataset.l=code;
+  b.textContent=T9N[code].flag+' '+T9N[code].name;
+  b.onclick=()=>setLang(code);
+  lr.appendChild(b);
+});
+
+// selGroup helper
+function sel(id,cb){
+  document.querySelectorAll('#'+id+' .cb').forEach(b=>{
+    b.onclick=()=>{
+      document.querySelectorAll('#'+id+' .cb').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+      cb(+b.dataset.v);
+    };
+  });
+}
+sel('oppRow',v=>{NUM_AI=v;});
+sel('diffRow',v=>{DIFF=v;document.getElementById('algoNote').textContent=L.algo[v];updateAdaptBox();});
+
+// Delay slider
+document.getElementById('delaySlider').oninput=function(){
+  AI_DELAY=+this.value;
+  document.getElementById('delayVal').textContent=L.dfmt(AI_DELAY);
+};
+
+// Howto
+document.getElementById('howtoLink').onclick=()=>{
+  const box=document.getElementById('howtoBox');
+  box.innerHTML=L.howto;
+  document.getElementById('howtoModal').classList.remove('hidden');
+  box.querySelector('#mcl').onclick=()=>document.getElementById('howtoModal').classList.add('hidden');
+};
+
+// Log toggle
+document.getElementById('logBtn').onclick=()=>{
+  logOn=!logOn;
+  document.getElementById('logBox').classList.toggle('lh',!logOn);
+  document.getElementById('logBtn').classList.toggle('on',logOn);
+  document.getElementById('logBtn').textContent=logOn?L.eventOn:L.eventOff;
+};
+
+// Start
+document.getElementById('startBtn').onclick=()=>{
+  NICK=document.getElementById('nickIn').value.trim()||'Player';
+  document.getElementById('setupScreen').classList.add('hidden');
+  document.getElementById('game').classList.remove('hidden');
+  startGame();
+};
+
+// Quit
+document.getElementById('quitBtn').onclick=()=>{
+  clearTimers();
+  document.getElementById('game').classList.add('hidden');
+  document.getElementById('setupScreen').classList.remove('hidden');
+};
+
+// Draw / Pass / Deck click
+document.getElementById('drawBtn').onclick=()=>{
+  if(!S||S.over||ap().id!==0||S.drawn)return;
+  const got=drawCards(ap(),1);S.drawn=true;
+  if(DIFF===6 && S.pStats) S.pStats.forced++;
+  if(got.length)addLog(L.L.d1(ap().name));
+  renderAll();
+};
+document.getElementById('passBtn').onclick=()=>{
+  if(!S||S.over||ap().id!==0)return;
+  adv();renderAll();aiNext();
+};
+document.getElementById('dp').onclick=()=>{
+  if(!S||ap().id!==0||S.drawn)return;
+  document.getElementById('drawBtn').click();
+};
+
+// UNO button
+document.getElementById('unoBtn').onclick=()=>{
+  if(!S||S.over)return;
+  const me=S.players[0];
+  if(me.vuln){
+    me.uno=true;clearVuln(me);
+    if(DIFF===6)AS.unoOK++;
+    addLog(L.L.uno(me.name));renderAll();
+  } else {
+    const target=S.players.filter(p=>p.isAI&&p.vuln).sort((a,b)=>a.hand.length-b.hand.length)[0];
+    if(target)catchP(target,me);
+  }
+};
+
+// Apply initial lang
+applyLang();
+document.getElementById('delayVal').textContent=L.dfmt(AI_DELAY);
+
+/* ═══════════════════════════════════════════════════════
+   ADAPTIVE AI ENGINE — ENHANCED
+═══════════════════════════════════════════════════════ */
+// Grade labels per language
+const GRADES = {
+  ko:['입문','초급','중급','고급','전문가'],
+  en:['Beginner','Basic','Intermediate','Advanced','Expert'],
+  ru:['Начинающий','Базовый','Средний','Продвинутый','Эксперт'],
+  zh:['入门','初级','中级','高级','专家'],
+  kk:['Бастаушы','Негізгі','Орташа','Жоғары','Сарапшы'],
+  uz:['Boshlang\'ich','Asosiy','O\'rta','Yuqori','Mutaxassis'],
+  ky:['Башталгыч','Негизги','Орто','Жогорку','Эксперт']
+};
+// Style tags per language: [aggressive, wildSaver, unoAlert, passive, balanced]
+const STYLE_TAGS = {
+  ko:['⚔️ 공격형','🃏 와일드 절약','👁 UNO 민감','🛡 소극형','⚖️ 균형형'],
+  en:['⚔️ Aggressive','🃏 Wild Saver','👁 UNO Alert','🛡 Passive','⚖️ Balanced'],
+  ru:['⚔️ Агрессивный','🃏 Хранит Wild','👁 Чует UNO','🛡 Пассивный','⚖️ Сбалансирован'],
+  zh:['⚔️ 进攻型','🃏 屯牌型','👁 UNO敏感','🛡 防守型','⚖️ 均衡型'],
+  kk:['⚔️ Агрессивті','🃏 Wild сақтаушы','👁 UNO сезімтал','🛡 Бейтарап','⚖️ Тепе-тең'],
+  uz:['⚔️ Agressiv','🃏 Wild saqlovchi','👁 UNO sezgir','🛡 Passiv','⚖️ Muvozanatli'],
+  ky:['⚔️ Агрессивдүү','🃏 Wild сактоочу','👁 UNO сезимтал','🛡 Пассивдүү','⚖️ Тең салмактуу']
+};
+
+// Adaptive State
+const AS = {
+  games:0, wins:0,
+  streak:0,        // >0 win streak, <0 loss streak
+  level:2.0,       // float 1.0-5.0
+  emaWR:0.5,       // exponential moving average win rate
+  margins:[],      // card count diff history (playerCards - avgAICards)
+  lastResult:null, // 'win'|'loss'
+  // UNO awareness
+  unoOK:0, unoCaught:0, catches:0, missedCatch:0,
+  // Play style (rolling averages 0-1)
+  style:{
+    aggression:0.4,  // attack card usage rate when available
+    wildSave:0.5,    // 0=uses wilds early, 1=saves until desperate
+    alertness:0.5,   // UNO catch/declare accuracy
+    drawRate:0.3     // how often forced to draw instead of play
+  }
+};
+
+function adaptLv(){
+  // Return integer level with slight noise for unpredictability
+  return Math.min(5, Math.max(1, Math.round(AS.level + (Math.random()-.5)*.7)));
+}
+function asWR(){ return AS.games===0?50:Math.round(AS.wins/AS.games*100); }
+function asLvStr(){ return AS.level.toFixed(1); }
+function asGrade(){
+  const g = GRADES[LANG] || GRADES.en;
+  const idx = Math.min(4, Math.floor((AS.level-1)/0.82));
+  return g[idx];
+}
+function asStreakTxt(){
+  const n = AS.streak;
+  if(n>=2) return `🔥 ${n}`;
+  if(n<=-2) return `❄️ ${Math.abs(n)}`;
+  return null;
+}
+function asStyleTags(){
+  const tags = STYLE_TAGS[LANG] || STYLE_TAGS.en;
+  const result = [];
+  if(AS.style.aggression > 0.58) result.push(tags[0]);
+  if(AS.style.wildSave > 0.65) result.push(tags[1]);
+  if(AS.style.alertness > 0.75) result.push(tags[2]);
+  if(AS.style.drawRate > 0.48) result.push(tags[3]);
+  if(result.length===0 && AS.games>=3) result.push(tags[4]);
+  return result;
+}
+
+function updateAdaptive(won, myCards, aiCards, pStats){
+  AS.games++;
+  if(won) AS.wins++;
+
+  // Streak
+  AS.streak = won ? Math.max(0,AS.streak)+1 : Math.min(0,AS.streak)-1;
+  AS.lastResult = won ? 'win' : 'loss';
+
+  // EMA win rate — alpha decays so early games are exploratory
+  const alpha = Math.min(0.38, 2.2/(AS.games+2));
+  AS.emaWR = alpha*(won?1:0) + (1-alpha)*AS.emaWR;
+
+  // Card margin (negative = player ended with fewer cards = better performance)
+  const avgAI = aiCards.length ? aiCards.reduce((a,b)=>a+b,0)/aiCards.length : 5;
+  AS.margins.push(myCards - avgAI);
+  if(AS.margins.length>15) AS.margins.shift();
+  const avgMargin = AS.margins.reduce((a,b)=>a+b,0)/AS.margins.length;
+
+  // Update style profile from per-game stats
+  if(pStats && pStats.totalPlays>0){
+    // Aggression: attack card rate
+    AS.style.aggression = 0.72*AS.style.aggression + 0.28*(pStats.atkPlays/pStats.totalPlays);
+    // Wild save: was wild used when hand was still large?
+    if(pStats.wildTotal>0)
+      AS.style.wildSave = 0.72*AS.style.wildSave + 0.28*(pStats.wildLate/pStats.wildTotal);
+    // Draw rate
+    const total = pStats.totalPlays + pStats.forced;
+    if(total>0)
+      AS.style.drawRate = 0.72*AS.style.drawRate + 0.28*(pStats.forced/total);
+  }
+  // UNO alertness
+  const unoTotal = AS.unoOK + AS.unoCaught;
+  if(unoTotal>0) AS.style.alertness = AS.unoOK/unoTotal;
+  const catchTotal = AS.catches + AS.missedCatch;
+  if(catchTotal>0) AS.style.alertness = AS.style.alertness*0.6 + (AS.catches/catchTotal)*0.4;
+
+  // Composite skill signal
+  let sig = (AS.emaWR - 0.5) * 3.2;         // win rate pressure (main driver)
+  sig += (-avgMargin * 0.14);                  // card efficiency
+  sig += (AS.style.alertness - 0.5) * 0.35;  // UNO skill
+  sig += (AS.style.aggression - 0.4) * 0.2;  // aggression is a skill signal
+  if(Math.abs(AS.streak)>=3) sig += Math.sign(AS.streak)*0.25; // streak amplifier
+
+  // Speed of adjustment: faster early (exploration), slower when stable
+  const baseSpeed = 0.22;
+  const streakBoost = Math.min(0.18, Math.abs(AS.streak)*0.05);
+  const speed = baseSpeed + streakBoost;
+
+  AS.level = Math.min(5, Math.max(1,
+    AS.level + Math.sign(sig) * Math.min(Math.abs(sig)*0.55, speed)
+  ));
+
+  updateAdaptBox();
+}
+
+function updateAdaptBox(){
+  const box = document.getElementById('adaptBox');
+  if(!box) return;
+  if(DIFF!==6){ box.classList.add('hidden'); return; }
+  box.classList.remove('hidden');
+
+  const pct = ((AS.level-1)/4*100).toFixed(0);
+  const streakTxt = asStreakTxt();
+  const grade = asGrade();
+  const tags = asStyleTags();
+  const wr = asWR();
+
+  let streakBadge = '';
+  if(streakTxt && AS.games>0){
+    const cls = AS.streak>0?'ws':'ls';
+    streakBadge = `<span class="adapt-streak ${cls}">${streakTxt}</span>`;
+  }
+
+  const lastBg = AS.lastResult==='win'?'rgba(46,174,92,.12)':AS.lastResult==='loss'?'rgba(226,65,43,.1)':'rgba(100,60,200,.07)';
+  const lastColor = AS.lastResult==='win'?'#1f8a47':AS.lastResult==='loss'?'#b5301f':'#5a30c0';
+
+  box.innerHTML = `
+  <div class="adapt-head">
+    <div class="adapt-grade">${grade} &nbsp;<span style="font-size:13px;font-weight:700;">Lv ${asLvStr()}</span></div>
+    ${streakBadge}
+  </div>
+  <div class="adapt-track">
+    <span style="font-size:10px;opacity:.6;">1</span>
+    <div class="adapt-bg"><div class="adapt-fill" style="width:${pct}%"></div></div>
+    <span style="font-size:10px;opacity:.6;">5</span>
+  </div>
+  <div class="adapt-stats">
+    <div class="adapt-stat"><div class="sv">${AS.games}</div><div class="sk">Games</div></div>
+    <div class="adapt-stat"><div class="sv">${wr}%</div><div class="sk">Win Rate</div></div>
+    <div class="adapt-stat" style="background:${lastBg};"><div class="sv" style="color:${lastColor};">${AS.lastResult==='win'?'WIN':AS.lastResult==='loss'?'LOSS':'–'}</div><div class="sk">Last</div></div>
+  </div>
+  ${tags.length?`<div class="adapt-tags">${tags.map(t=>`<span class="atag">${t}</span>`).join('')}</div>`:''}
+  ${AS.games>0?`<button class="del-rec-btn" onclick="confirmDeleteAS()">🗑 학습 기록 삭제</button>`:''}`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CARD MODEL
+═══════════════════════════════════════════════════════ */
+function buildDeck(){
+  let id=0,d=[];
+  COLORS.forEach(c=>{
+    d.push({id:id++,color:c,type:'num',val:0});
+    for(let n=1;n<=9;n++){d.push({id:id++,color:c,type:'num',val:n});d.push({id:id++,color:c,type:'num',val:n});}
+    ['skip','rev','d2'].forEach(t=>{d.push({id:id++,color:c,type:t});d.push({id:id++,color:c,type:t});});
+  });
+  for(let i=0;i<4;i++){d.push({id:id++,color:'wild',type:'wild'});d.push({id:id++,color:'wild',type:'d4'});}
+  return d;
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function cardLbl(c){const m={num:''+c.val,skip:'⦸',rev:'⟲',d2:'+2',wild:'★',d4:'+4'};return m[c.type];}
+function cardCls(c,cc){return'c-'+(c.color==='wild'?(cc||'wild'):c.color);}
+function CK(){return{red:L.red,yel:L.yel,grn:L.grn,blu:L.blu};}
+
+/* ═══════════════════════════════════════════════════════
+   TIMERS
+═══════════════════════════════════════════════════════ */
+function later(fn,ms){const t=setTimeout(fn,ms);timers.push(t);return t;}
+function clearTimers(){timers.forEach(t=>clearTimeout(t));timers=[];}
+
+/* ═══════════════════════════════════════════════════════
+   LOGGING
+═══════════════════════════════════════════════════════ */
+function addLog(msg){
+  if(!S)return;
+  S.logs.unshift(msg);if(S.logs.length>60)S.logs.pop();
+  document.getElementById('logBox').innerHTML=S.logs.map(m=>`<div>${m}</div>`).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   GAME CORE
+═══════════════════════════════════════════════════════ */
+function startGame(){
+  clearTimers();
+  document.getElementById('pname').textContent=NICK;
+  // Build human names for real-player mode
+  if(GAME_MODE==='human'){
+    HUMAN_NAMES=[];
+    for(let i=1;i<=NUM_AI;i++){
+      const inp=document.getElementById('hname'+i);
+      HUMAN_NAMES[i]=inp?inp.value.trim()||('Player '+(i+1)):('Player '+(i+1));
+    }
+  }
+  const players=[{id:0,isAI:false,name:NICK,hand:[],uno:false,vuln:false,ct:[]}];
+  for(let i=1;i<=NUM_AI;i++){
+    const lv=DIFF===6?adaptLv():DIFF;
+    const isHuman=GAME_MODE==='human';
+    const nm=isHuman?(HUMAN_NAMES[i]||('Player '+(i+1))):('AI '+i);
+    players.push({id:i,isAI:!isHuman,name:nm,level:lv,hand:[],uno:false,vuln:false,ct:[]});
+  }
+  const deck=shuffle(buildDeck());
+  players.forEach(p=>{p.hand=deck.splice(0,7);});
+  let first=deck.pop();
+  while(first.type==='d4'){deck.unshift(first);shuffle(deck);first=deck.pop();}
+  S={players,deck,discard:[first],turn:0,dir:1,
+    color:first.color==='wild'?COLORS[Math.floor(Math.random()*4)]:first.color,
+    logs:[],over:false,drawn:false,firstDeal:true,
+    // Per-game player stat tracking
+    pStats:{totalPlays:0,atkPlays:0,wildTotal:0,wildLate:0,forced:0}};
+  const ck=CK();
+  addLog(L.L.start(ck[S.color]||S.color,cardLbl(first)));
+  if(first.type==='skip'){adv();addLog(L.L.fs);}
+  else if(first.type==='rev'){S.dir*=-1;addLog(L.L.fr);}
+  else if(first.type==='d2'){const v=S.players[nxt(S.turn)];drawCards(v,2);addLog(L.L.fd2(v.name));adv();}
+  renderAll();
+  aiNext();
+}
+
+function ap(){return S.players[S.turn];}
+function nxt(from){return(from+S.dir+S.players.length)%S.players.length;}
+function adv(){S.turn=nxt(S.turn);S.drawn=false;}
+function aiNext(){
+  if(!S||S.over)return;
+  const p=ap();
+  if(p.isAI){later(aiTurn,AI_DELAY);return;}
+  if(p.id!==0){
+    // real human opponent — show pass-device screen
+    showPassScreen(p,()=>renderAll());
+  }
+}
+
+function drawCards(p,n){
+  const got=[];
+  for(let i=0;i<n;i++){
+    if(!S.deck.length){
+      if(S.discard.length>1){const top=S.discard.pop();S.deck=shuffle(S.discard);S.discard=[top];addLog(L.L.rs);}
+      else break;
+    }
+    const c=S.deck.pop();p.hand.push(c);got.push(c);
+  }
+  if(p.hand.length!==1)clearVuln(p);
+  return got;
+}
+
+function topCard(){return S.discard[S.discard.length-1];}
+
+function canPlay(c){
+  const t=topCard();
+  if(c.color==='wild')return true;
+  if(c.color===S.color)return true;
+  if(t.type==='num'&&c.type==='num'&&c.val===t.val)return true;
+  if(c.type!=='num'&&c.type===t.type)return true;
+  return false;
+}
+
+/* ═══════════════════════════════════════════════════════
+   VULNERABILITY / UNO CATCH
+═══════════════════════════════════════════════════════ */
+function clearVuln(p){if(!p.vuln)return;p.vuln=false;p.ct.forEach(t=>clearTimeout(t));p.ct=[];}
+
+function setVuln(p){
+  p.vuln=true;p.uno=false;p.ct.forEach(t=>clearTimeout(t));p.ct=[];
+  if(p.isAI){
+    const delay=Math.max(250,2800-p.level*480+Math.random()*500);
+    const t=later(()=>{
+      if(p.vuln&&!S.over){
+        p.uno=true;p.vuln=false;
+        if(DIFF===6)AS.missedCatch++;
+        addLog(L.L.uno(p.name));renderAll();
+      }
+    },delay);
+    p.ct.push(t);
+  } else {
+    S.players.filter(x=>x.isAI).forEach(ai=>{
+      const delay=Math.max(400,3400-ai.level*500+Math.random()*800);
+      const t=later(()=>{if(p.vuln&&!S.over)catchP(p,ai);},delay);
+      p.ct.push(t);timers.push(t);
+    });
+  }
+  renderAll();
+}
+
+function catchP(victim,catcher){
+  if(!victim.vuln)return;
+  clearVuln(victim);drawCards(victim,1);
+  if(DIFF===6){
+    if(victim.id===0)AS.unoCaught++;
+    else if(catcher.id===0)AS.catches++;
+  }
+  addLog(L.L.catch(catcher.name,victim.name));
+  const el=document.getElementById('dp');if(el){el.classList.remove('shk');void el.offsetWidth;el.classList.add('shk');}
+  renderAll();
+}
+
+/* ═══════════════════════════════════════════════════════
+   PLAY CARD
+═══════════════════════════════════════════════════════ */
+function playCard(p,c,cc){
+  const ck=CK();
+  // Track player style stats (only for human player)
+  if(DIFF===6 && p.id===0 && S.pStats){
+    S.pStats.totalPlays++;
+    if(c.type==='skip'||c.type==='rev'||c.type==='d2'||c.type==='d4') S.pStats.atkPlays++;
+    if(c.color==='wild'){
+      S.pStats.wildTotal++;
+      // "late" wild = played when hand size was small (≤3) or forced, means saving
+      if(p.hand.length<=3) S.pStats.wildLate++;
+    }
+  }
+  p.hand=p.hand.filter(x=>x.id!==c.id);
+  S.discard.push(c);
+  S.color=c.color==='wild'?cc:c.color;
+  let skip=false;
+  if(c.type==='skip'){skip=true;addLog(L.L.skip(p.name));}
+  else if(c.type==='rev'){S.dir*=-1;if(S.players.length===2)skip=true;addLog(L.L.rev(p.name));}
+  else if(c.type==='d2'){const v=S.players[nxt(S.turn)];drawCards(v,2);addLog(L.L.d2(p.name,v.name));skip=true;}
+  else if(c.type==='d4'){const v=S.players[nxt(S.turn)];drawCards(v,4);addLog(L.L.d4(p.name,v.name,ck[cc]||cc));skip=true;}
+  else if(c.type==='wild')addLog(L.L.wild(p.name,ck[cc]||cc));
+  else addLog(L.L.num(p.name,ck[c.color]||c.color,c.val));
+  if(p.hand.length===0){clearVuln(p);renderAll();later(()=>endGame(p),200);return;}
+  if(p.hand.length===1)setVuln(p);else clearVuln(p);
+  adv();if(skip)adv();
+  renderAll();aiNext();
+}
+
+function endGame(winner){
+  S.over=true;clearTimers();
+  if(DIFF===6)updateAdaptive(winner.id===0,S.players[0].hand.length,S.players.filter(p=>p.isAI).map(p=>p.hand.length),S.pStats);
+  renderAll();
+  const ov=document.createElement('div');ov.className='wbg';
+  ov.innerHTML=`<div class="wbox"><div class="wtitle">${L.winT(winner.name)}</div><div class="wsub">${L.winS(winner.name)}</div><button class="go-btn" style="margin-top:18px;max-width:200px;">${L.retry}</button></div>`;
+  ov.querySelector('.go-btn').onclick=()=>{ov.remove();document.getElementById('game').classList.add('hidden');document.getElementById('setupScreen').classList.remove('hidden');};
+  document.body.appendChild(ov);
+}
+
+/* ═══════════════════════════════════════════════════════
+   AI
+═══════════════════════════════════════════════════════ */
+function legalMoves(p){return p.hand.filter(canPlay);}
+function colCounts(hand){const m={red:0,yel:0,grn:0,blu:0};hand.forEach(c=>{if(c.color!=='wild')m[c.color]=(m[c.color]||0)+1;});return m;}
+function bestCol(hand,lv){
+  const m=colCounts(hand);let b='red',bv=-1;
+  COLORS.forEach(c=>{let v=m[c]||0;if(lv>=4){const dc=S.discard.filter(x=>x.color===c).length;v+=(10-Math.min(dc,10))*.08;}if(v>bv){bv=v;b=c;}});
+  return b;
+}
+function nextOppCnt(){return S.players[nxt(S.turn)].hand.length;}
+
+function scoreCard(c,p,lv){
+  let sc=10;const m=colCounts(p.hand);const dom=bestCol(p.hand,lv);
+  if(c.color===dom&&c.color!=='wild')sc+=7;
+  if(c.color!=='wild')sc+=(m[c.color]||0)*.6;
+  const atk=(c.type==='skip'||c.type==='rev'||c.type==='d2'||c.type==='d4');
+  const threat=nextOppCnt()<=2;
+  const anyThreat=S.players.filter(p2=>p2.id!==p.id).some(p2=>p2.hand.length<=2);
+  if(atk&&threat)sc+=35;if(atk&&anyThreat&&!threat)sc+=12;
+  if((c.type==='wild'||c.type==='d4')&&(S.deck.length+S.discard.length>55)&&!anyThreat)sc-=22;
+  if(c.type==='num')sc+=3;
+  if(lv>=4){sc+=Math.max(0,(10-S.discard.filter(x=>x.color===c.color).length))*.3;if(p.hand.length<=3&&c.type!=='num')sc-=5;}
+  if(lv>=4&&(c.type==='wild'||c.type==='d4')&&p.hand.filter(x=>x.color==='wild').length<=1&&!anyThreat)sc-=15;
+
+  // Adaptive counter-strategy: AI reads player style and counters
+  if(DIFF===6 && p.isAI){
+    const st=AS.style;
+    // vs aggressive player: value defense (skip/rev) higher to disrupt their flow
+    if(st.aggression>0.58 && (c.type==='skip'||c.type==='rev')) sc+=10;
+    // vs wild saver: change colors frequently to frustrate their plan
+    if(st.wildSave>0.65 && c.type!=='wild'&&c.type!=='d4') sc+=6;
+    // vs draw-prone player: accelerate game pace (play numbers to end fast)
+    if(st.drawRate>0.48 && c.type==='num') sc+=7;
+    // vs inattentive UNO caller: rush end-game when hand is small
+    if(st.alertness<0.4 && p.hand.length<=2) sc+=10;
+    // vs alert player: delay declaring (avoid trigger, handled in setVuln timing)
+    if(st.alertness>0.75) sc-=3; // be slightly more conservative
+  }
+
+  return sc;
+}
+
+function mctsCard(p,moves){
+  const SIMS=12;let best=moves[0],bv=-Infinity;
+  moves.forEach(c=>{
+    const base=scoreCard(c,p,4);let w=0;
+    for(let r=0;r<SIMS;r++){
+      let my=p.hand.length-1;
+      let opp=S.players.filter(x=>x.id!==p.id).map(x=>x.hand.length);
+      if(c.type==='d2')opp[0]=Math.max(0,(opp[0]||0)+2);
+      if(c.type==='d4')opp[0]=Math.max(0,(opp[0]||0)+4);
+      if(c.type==='skip'||c.type==='rev')opp[0]=Math.max(0,(opp[0]||0)+.5);
+      for(let t=0;t<5;t++){my-=Math.random()<.58?1:0;opp=opp.map(h=>Math.max(0,h-(Math.random()<.5?1:0)));}
+      my=Math.max(my,0);const mo=Math.min(...opp);
+      w+=my===0?1:mo===0?0:my<mo?.9:my===mo?.5:Math.max(0,.5-(my-mo)*.12);
+    }
+    const v=base*.35+(w/SIMS)*65;if(v>bv){bv=v;best=c;}
+  });
+  return best;
+}
+
+function chooseCard(p,moves){
+  const lv=p.level;
+  if(lv===1)return moves[Math.floor(Math.random()*moves.length)];
+  if(lv===2){
+    const nums=moves.filter(c=>c.type==='num');
+    const dom=bestCol(p.hand,2);const domM=moves.filter(c=>c.color===dom);
+    if(nums.length&&Math.random()<.72)return nums[Math.floor(Math.random()*nums.length)];
+    if(domM.length)return domM[Math.floor(Math.random()*domM.length)];
+    return moves[Math.floor(Math.random()*moves.length)];
+  }
+  if(lv<=4){let b=moves[0],bs=-Infinity;moves.forEach(c=>{const s=scoreCard(c,p,lv);if(s>bs){bs=s;b=c;}});return b;}
+  return mctsCard(p,moves);
+}
+
+function aiTurn(){
+  if(!S||S.over)return;
+  const p=ap();if(!p.isAI)return;
+  // Show AI pill
+  const nm=DIFF===6?`${L.adaptLbl} Lv${asLvStr()}`:(L.aiN[p.level]||'AI');
+  const pill=document.getElementById('aiPill');
+  document.getElementById('aiTxt').textContent=`${p.name} · ${nm}`;
+  pill.classList.remove('hidden');
+  let moves=legalMoves(p);
+  if(!moves.length){
+    const got=drawCards(p,1);
+    if(got.length&&canPlay(got[0]))moves=[got[0]];
+    else{addLog(L.L.nc(p.name));adv();renderAll();later(()=>{if(!S.over&&ap().isAI)aiTurn();},AI_DELAY);return;}
+  }
+  const chosen=chooseCard(p,moves);
+  const cc=chosen.color==='wild'?bestCol(p.hand,p.level):null;
+  playCard(p,chosen,cc);
+}
+
+/* ═══════════════════════════════════════════════════════
+   SWIPE
+═══════════════════════════════════════════════════════ */
+function showPicker(cb){
+  const bg=document.createElement('div');bg.className='pbg';
+  const grid=document.createElement('div');grid.className='pgrid';
+  COLORS.forEach(col=>{const b=document.createElement('button');b.className='pcol c-'+col;b.onclick=()=>{bg.remove();cb(col);};grid.appendChild(b);});
+  bg.appendChild(grid);document.body.appendChild(bg);
+}
+
+function addSwipe(el,card){
+  let sx=null,sy=null,bRot=0,bY=0,moved=false;
+  function start(cx,cy){sx=cx;sy=cy;moved=false;bRot=parseFloat(el.style.getPropertyValue('--fr')||'0');bY=parseFloat(el.style.getPropertyValue('--fy')||'0');el.style.transition='none';}
+  function move(cx,cy){
+    if(sx===null)return;
+    const dx=cx-sx,dy=cy-sy,dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<4)return;moved=true;
+    const p=Math.min(dist/120,1);
+    el.style.transition='none';
+    el.style.transform=`rotateX(${16*(1-p)}deg) rotateZ(${bRot*(1-p)}deg) translate(${dx*.9}px,${Math.min(0,-Math.abs(dy*.6))+bY*(1-p)}px) scale(${1+p*.05})`;
+    el.style.zIndex=10;
+  }
+  function end(cx,cy){
+    if(sx===null)return;
+    const dx=cx-sx,dy=cy-sy,dist=Math.sqrt(dx*dx+dy*dy);
+    sx=null;sy=null;
+    if(moved&&dist>52&&ap().id===0&&canPlay(card)&&!S.over){
+      el.style.zIndex='';
+      if(card.color==='wild'){
+        el.style.transition='transform .28s var(--easeOut)';
+        el.style.transform=`rotateX(16deg) rotateZ(${bRot}deg) translateY(${bY}px)`;
+        setTimeout(()=>showPicker(ch=>playCard(ap(),card,ch)),180);
+      } else {
+        playCard(ap(),card,null);
+      }
+    } else {
+      el.style.transition='transform .3s var(--easeOut)';
+      el.style.transform=`rotateX(16deg) rotateZ(${bRot}deg) translateY(${bY}px)`;
+      el.style.zIndex='';
+      setTimeout(()=>{el.style.transition='';},320);
+    }
+    moved=false;
+  }
+  el.addEventListener('touchstart',e=>{const t=e.changedTouches[0];start(t.clientX,t.clientY);},{passive:true});
+  el.addEventListener('touchmove',e=>{const t=e.changedTouches[0];move(t.clientX,t.clientY);e.preventDefault();},{passive:false});
+  el.addEventListener('touchend',e=>{const t=e.changedTouches[0];end(t.clientX,t.clientY);});
+  // Mouse: use document-level move/up to avoid sticking
+  el.addEventListener('mousedown',e=>{
+    start(e.clientX,e.clientY);e.preventDefault();
+    function mm(e){move(e.clientX,e.clientY);}
+    function mu(e){end(e.clientX,e.clientY);document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);}
+    document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════════════ */
+function makeCard(c,cc){
+  const el=document.createElement('div');el.className='card '+cardCls(c,cc);
+  const lbl=cardLbl(c);
+  el.innerHTML=`<div class="cr tl">${lbl}</div><div class="face">${lbl}</div><div class="cr br">${lbl}</div>`;
+  return el;
+}
+
+function renderAll(){
+  if(!S)return;
+  const ck=CK();
+  document.getElementById('topMeta').textContent=L.meta(S.dir===1?L.cw:L.ccw,S.deck.length);
+  document.getElementById('dirInd').textContent=S.dir===1?'⟳':'⟲';
+
+  // Opponents
+  const row=document.getElementById('oppsRow');row.innerHTML='';
+  S.players.filter(p=>p.isAI||p.id!==0&&GAME_MODE==='human').forEach(p=>{
+    if(p.id===0) return; // skip self
+    const d=document.createElement('div');
+    const isActive=S.players[S.turn].id===p.id;
+    d.className='opp'+(isActive?' act':'');
+    const n=p.hand.length,SHOW=Math.min(n,10);
+    // Realistic 3D card fan
+    const STEP=18,tw=(SHOW-1)*STEP,ma=Math.min(SHOW*4.5,42);
+    let fan='<div class="opp-fan-wrap">';
+    for(let i=0;i<SHOW;i++){
+      const t=SHOW<=1?0:(i/(SHOW-1)-.5)*2;
+      const rot=t*ma;
+      const yLift=Math.abs(t)*ma*0.35;
+      fan+=`<div class="ocard-3d" style="left:calc(50% - 13px - ${tw/2}px + ${i*STEP}px);transform:rotate(${rot}deg) translateY(${yLift}px);z-index:${i};">
+        <span class="card-back-lbl">ROSA Card</span></div>`;
+    }
+    fan+='</div>';
+    const lvlTxt = p.isAI ? L.lvl(p.level) : '👤 사람';
+    d.innerHTML=(p.hand.length===1&&p.uno?'<div class="utag">UNO</div>':'')+(p.vuln?'<div class="vtag">!</div>':'')+
+      `<div class="on">${p.name}</div><div class="ol">${lvlTxt}</div>${fan}
+      <div class="opp-cnt-badge"><span class="cnt-num">${n}</span><span style="font-size:11px;color:var(--ink-d);">장</span></div>`;
+    row.appendChild(d);
+  });
+
+  // Discard
+  const t=topCard(),discEl=document.getElementById('disc');discEl.innerHTML='';
+  const ce=makeCard(t,S.color);ce.classList.add('da');
+  const tag=document.createElement('div');tag.className='ctag';tag.style.background=CHEX[S.color]||'#555';tag.textContent=ck[S.color]||S.color;
+  ce.appendChild(tag);discEl.appendChild(ce);
+
+  // Hand
+  const me=S.players[0],hd=document.getElementById('hand');hd.innerHTML='';
+  const isMe=!S.over&&ap().id===0;
+  if(isMe)document.getElementById('aiPill').classList.add('hidden');
+  const n=me.hand.length,arc=Math.min(24,n*2.8),doAnim=S.firstDeal;
+  me.hand.forEach((c,i)=>{
+    const play=isMe&&canPlay(c);
+    const el=makeCard(c,null);el.classList.add('hc');el.classList.add(play?'play':'gray');
+    const t2=n<=1?0:(i/(n-1)-.5)*2;
+    const rot=t2*arc*.5,yOff=Math.abs(t2)*arc*.8;
+    el.style.setProperty('--fr',rot+'deg');el.style.setProperty('--fy',yOff+'px');
+    el.style.transform=`rotateX(16deg) rotateZ(${rot}deg) translateY(${yOff}px)`;
+    if(doAnim)el.style.animationDelay=(i*.04)+'s';else el.style.animation='none';
+    if(play&&!S.over)addSwipe(el,c);
+    hd.appendChild(el);
+  });
+  if(S.firstDeal)S.firstDeal=false;
+
+  // Controls
+  document.getElementById('ttag').classList.toggle('hidden',!isMe);
+  document.getElementById('drawBtn').classList.toggle('hidden',!isMe);
+  document.getElementById('drawBtn').disabled=S.drawn;
+  document.getElementById('passBtn').classList.toggle('hidden',!isMe);
+  document.getElementById('shint').style.opacity=isMe?'.6':'0';
+  document.getElementById('dp').classList.toggle('off',!isMe||S.drawn);
+  const myV=me.vuln,aiV=S.players.some(p=>p.isAI&&p.vuln);
+  document.getElementById('unoBtn').classList.toggle('hidden',!myV&&!aiV);
+}
+
+/* ═══════════════════════════════════════════════════════
+   REAL-PLAYER MODE
+═══════════════════════════════════════════════════════ */
+let GAME_MODE = 'ai'; // 'ai' | 'human'
+let HUMAN_NAMES = [];
+
+function setMode(mode){
+  GAME_MODE = mode;
+  document.getElementById('modeAI').classList.toggle('on', mode==='ai');
+  document.getElementById('modeHuman').classList.toggle('on', mode==='human');
+  // Show/hide diff row and human names
+  const diffSection = document.getElementById('diffRow').parentElement;
+  document.getElementById('G_lDiff').style.display = mode==='ai'?'':'none';
+  document.getElementById('diffRow').style.display = mode==='ai'?'':'none';
+  document.getElementById('adaptBox').style.display = mode==='ai'?'':'none';
+  document.getElementById('G_lDelay').style.display = mode==='ai'?'':'none';
+  document.querySelector('input#delaySlider').parentElement.style.display = mode==='ai'?'':'none';
+  document.querySelector('#delaySlider + span + *')?.style && (document.querySelectorAll('.panel > div')[document.querySelectorAll('.panel > div').length-3].style.display = mode==='ai'?'':'none');
+  buildHumanNameFields();
+  document.getElementById('humanNames').classList.toggle('hidden', mode==='ai');
+}
+
+function buildHumanNameFields(){
+  const n = NUM_AI; // reuse NUM_AI as count of human opponents
+  const cont = document.getElementById('humanNameFields');
+  cont.innerHTML = '';
+  for(let i=1;i<=n;i++){
+    const d = document.createElement('div');
+    d.style.cssText='display:flex;align-items:center;gap:8px;margin:6px 0;';
+    d.innerHTML=`<span style="font-size:12px;font-weight:700;color:var(--ink-d);min-width:40px;">P${i+1}</span>
+    <input class="nick-in" style="flex:1;padding:8px 12px;" maxlength="10" placeholder="Player ${i+1}" id="hname${i}" value="${HUMAN_NAMES[i]||''}">`;
+    cont.appendChild(d);
+  }
+}
+
+// Pass-device screen logic
+function showPassScreen(player, cb){
+  const ps = document.getElementById('passScreen');
+  const av = document.getElementById('passAvatar');
+  const title = document.getElementById('passTitle');
+  const sub = document.getElementById('passSub');
+  const btn = document.getElementById('revealBtn');
+  av.textContent = (player.name||'?')[0].toUpperCase();
+  title.textContent = player.name + (L.myTurn ? ' — ' + L.myTurn : '의 차례');
+  sub.textContent = '📱 핸드폰을 전달해 주세요';
+  btn.textContent = '👁 손패 보기';
+  btn.onclick = ()=>{
+    ps.classList.add('hidden');
+    cb();
+  };
+  ps.classList.remove('hidden');
+}
+
+/* ═══════════════════════════════════════════════════════
+   PERSISTENT STORAGE — 학습 기록
+═══════════════════════════════════════════════════════ */
+const STORE_KEY='vkuno:as-v1';
+
+async function saveAS(){
+  if(typeof window.storage==='undefined')return;
+  try{
+    await window.storage.set(STORE_KEY,JSON.stringify({
+      games:AS.games,wins:AS.wins,streak:AS.streak,level:AS.level,emaWR:AS.emaWR,
+      lastResult:AS.lastResult,unoOK:AS.unoOK,unoCaught:AS.unoCaught,
+      catches:AS.catches,missedCatch:AS.missedCatch,
+      style:{...AS.style},margins:AS.margins.slice(-15)
+    }));
+  }catch(e){}
+}
+async function loadAS(){
+  if(typeof window.storage==='undefined')return;
+  try{
+    const res=await window.storage.get(STORE_KEY);
+    if(res&&res.value){
+      const d=JSON.parse(res.value);
+      Object.keys(d).forEach(k=>{if(k!=='style')AS[k]=d[k];});
+      if(d.style)Object.assign(AS.style,d.style);
+      updateAdaptBox();
+    }
+  }catch(e){}
+}
+async function clearASStorage(){
+  if(typeof window.storage==='undefined')return;
+  try{await window.storage.delete(STORE_KEY);}catch(e){}
+}
+function resetASData(){
+  AS.games=0;AS.wins=0;AS.streak=0;AS.level=2;AS.emaWR=0.5;
+  AS.margins=[];AS.lastResult=null;
+  AS.unoOK=0;AS.unoCaught=0;AS.catches=0;AS.missedCatch=0;
+  AS.style={aggression:0.4,wildSave:0.5,alertness:0.5,drawRate:0.3};
+}
+
+// Load on startup
+loadAS();
+
+// Patch updateAdaptive to auto-save
+const _origUA=updateAdaptive;
+updateAdaptive=function(...a){_origUA(...a);saveAS();};
+
+/* ═══════════════════════════════════════════════════════
+   ROSA Card ENGINE
+═══════════════════════════════════════════════════════ */
+let _cb=null,_cMsgs=[],_locked=false,_attempts=0,_finalResult=null;
+let _challenge=null,_cScores={time:null,ks:null,paste:null,ddos:null,ai:null};
+let _shownAt=0,_ksTimes=[],_lastKt=0,_pasted=false,_apiFlight=false,_clickTimes=[];
+
+const CHALLENGES=[
+  {q:'ROSA Card입니다.\n지금 학습 기록을 삭제하려는 이유를 간단히 말씀해 주세요.',hint:'자유롭게 설명해 주세요.'},
+  {q:'ROSA Card입니다.\n지금 기분이 어떤지 한 문장으로 표현해 주세요.',hint:"예: '오늘 게임을 많이 했어요' 등"},
+  {q:'본인 확인을 위해 질문드립니다.\n오늘 날씨가 어떤가요? 요즘 하는 일도 괜찮습니다.',hint:'자연스럽게 답변해 주세요.'},
+  {q:'ROSA Card가 대화를 분석합니다.\n자기소개를 한 줄만 해주세요.',hint:'이름, 취미 등 자유롭게'}
+];
+
+function $cid(id){return document.getElementById(id);}
+function escH(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function openCaptcha(cb){
+  _cb=cb;_cMsgs=[];_locked=false;_attempts=0;_finalResult=null;
+  _pasted=false;_ksTimes=[];_lastKt=0;_clickTimes=[];_apiFlight=false;
+  _cScores={time:null,ks:null,paste:null,ddos:null,ai:null};
+  _challenge=CHALLENGES[Math.floor(Math.random()*CHALLENGES.length)];
+  $cid('cChat').innerHTML='';
+  $cid('cResult').classList.remove('show');
+  $cid('chatSection').style.display='';
+  cSetStatus('idle','ROSA Card가 대화를 분석합니다');
+  $cid('cInput').value='';$cid('cInput').disabled=false;$cid('cSend').disabled=false;
+  cResetBadges();
+  $cid('captchaOverlay').classList.add('open');
+  setTimeout(()=>{
+    cBotBubble('🛡 보안 인증을 시작합니다');
+    setTimeout(()=>{
+      cBotBubble(_challenge.q);
+      cSetStatus('idle',_challenge.hint);
+      _shownAt=Date.now();cSetBadge('time','active');
+      setTimeout(()=>$cid('cInput').focus(),100);
+    },700);
+  },300);
+}
+
+function closeCaptcha(){
+  $cid('captchaOverlay').classList.remove('open');
+  if(_cb&&_finalResult!=='pass')_cb(false);
+  _cb=null;
+}
+document.getElementById('cCancelBtn').onclick=closeCaptcha;
+
+function cResetBadges(){['time','ks','paste','ddos','ai'].forEach(k=>cSetBadge(k,''));}
+function cSetBadge(k,s){const b=$cid('fb-'+k);if(b)b.className='fbadge'+(s?' '+s:'');}
+
+function cAddBubble(html,cls){
+  const c=$cid('cChat'),d=document.createElement('div');
+  d.className='bubble '+cls;d.innerHTML=html;
+  c.appendChild(d);c.scrollTop=c.scrollHeight;
+}
+function cBotBubble(t){cAddBubble('<div class="bsender">ROSA Card</div>'+t.replace(/\n/g,'<br>'),'bot');}
+function cUserBubble(t){cAddBubble(escH(t).replace(/\n/g,'<br>'),'user');}
+function cSysBubble(t){cAddBubble(t,'sys');}
+function cShowTyping(){
+  const c=$cid('cChat'),d=document.createElement('div');
+  d.className='bubble bot';d.id='typingDot';
+  d.innerHTML='<div class="bsender">ROSA Card</div><div class="typing-dots"><span></span><span></span><span></span></div>';
+  c.appendChild(d);c.scrollTop=c.scrollHeight;
+}
+function cHideTyping(){const e=$cid('typingDot');if(e)e.remove();}
+function cSetStatus(s,t){$cid('cDot').className='cdot '+s;$cid('cStatusTxt').textContent=t;}
+
+document.getElementById('cInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){sendCaptcha();return;}
+  const now=Date.now();if(_lastKt>0)_ksTimes.push(now-_lastKt);_lastKt=now;
+  cSetBadge('ks','active');
+});
+document.getElementById('cInput').addEventListener('paste',e=>{
+  _pasted=true;cSetBadge('paste','fail');e.preventDefault();
+  cSysBubble('⚠ 복사-붙여넣기 감지. 직접 입력해 주세요.');
+  document.getElementById('cInput').value='';
+});
+document.getElementById('cSend').onclick=sendCaptcha;
+
+function chkTime(){
+  const ms=Date.now()-_shownAt;
+  if(ms<600){_cScores.time=false;cSetBadge('time','fail');return{pass:false,msg:ms+'ms — 0.6초 미만'};}
+  _cScores.time=true;cSetBadge('time','pass');return{pass:true,msg:ms+'ms — 정상'};
+}
+function chkKS(){
+  if(_ksTimes.length<4){_cScores.ks=true;cSetBadge('ks','pass');return{pass:true,msg:'입력량 부족 — 통과'};}
+  const avg=_ksTimes.reduce((a,b)=>a+b,0)/_ksTimes.length;
+  const sd=Math.sqrt(_ksTimes.reduce((a,b)=>a+(b-avg)**2,0)/_ksTimes.length);
+  if(sd<10&&_ksTimes.length>6){_cScores.ks=false;cSetBadge('ks','fail');return{pass:false,msg:'타자 SD '+sd.toFixed(1)+'ms — 봇 패턴'};}
+  _cScores.ks=true;cSetBadge('ks','pass');return{pass:true,msg:'타자 불규칙성 정상'};
+}
+function chkPaste(){
+  if(_pasted){_cScores.paste=false;cSetBadge('paste','fail');return{pass:false};}
+  _cScores.paste=true;cSetBadge('paste','pass');return{pass:true};
+}
+function chkDDoS(){
+  const now=Date.now();_clickTimes.push(now);
+  if(_clickTimes.filter(t=>now-t<500).length>1){_cScores.ddos=false;cSetBadge('ddos','fail');return{pass:false};}
+  if(_apiFlight){_cScores.ddos=false;cSetBadge('ddos','fail');return{pass:false};}
+  _cScores.ddos=true;cSetBadge('ddos','pass');return{pass:true};
+}
+function localVerdict(t){
+  t=t.trim();if(t.length<2)return'fail';
+  if(['ㅇ','ㄴ','ㅇㅇ','네','아니오','테스트','test','aaa','bbb','123','abc','hi','hello'].includes(t.toLowerCase()))return'fail';
+  if(t.length>=6&&/[가-힣a-zA-Z]/.test(t))return'pass';
+  return'fail';
+}
+
+async function sendCaptcha(){
+  if(_locked)return;
+  const d4=chkDDoS();if(!d4.pass){cSysBubble('🚫 연속 클릭 감지');return;}
+  const d3=chkPaste();if(!d3.pass){doCapFail('복사-붙여넣기가 감지되어 차단되었습니다.');return;}
+  const d1=chkTime();if(!d1.pass){cSysBubble('⚡ '+d1.msg);doCapFail('응답이 너무 빠릅니다.');return;}
+  const d2=chkKS();
+  const input=document.getElementById('cInput');
+  const text=input.value.trim();if(!text)return;
+  input.value='';_attempts++;
+  cUserBubble(text);_cMsgs.push({role:'user',content:text});
+  _locked=true;_apiFlight=true;
+  input.disabled=true;document.getElementById('cSend').disabled=true;
+  cSetStatus('thinking','ROSA Card 5-Layer 분석 중...');cSetBadge('ai','active');cShowTyping();
+
+  const sp='당신은 ROSA Card AI입니다. 사람인지 봇인지 판별합니다.\n행동분석: 응답시간 '+(Date.now()-_shownAt)+'ms, 타자: '+d2.msg+', 복붙: '+(_pasted?'감지':'없음')+'\n챌린지: "'+_challenge.q+'"\n시도: '+_attempts+'\n판별: 자연스런 답변→pass, 짧고 무의미→continue(최대2회), 2회후 부적절→fail\n반드시 JSON만: {"verdict":"pass"|"continue"|"fail","reply":"한국어응답"}';
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:200,system:sp,
+        messages:_cMsgs.map(m=>({role:m.role,content:m.content}))})
+    });
+    const data=await res.json();
+    const raw=data.content?.find(c=>c.type==='text')?.text||'{}';
+    let p;try{p=JSON.parse(raw.replace(/```json|```/g,'').trim());}catch{p={verdict:'continue',reply:'다시 한번 답변해 주시겠어요?'};}
+    cHideTyping();_apiFlight=false;
+    _cMsgs.push({role:'assistant',content:p.reply||''});
+    if(p.verdict==='pass'){
+      _cScores.ai=true;cSetBadge('ai','pass');cBotBubble(p.reply||'✅ 인증 완료!');
+      cSetStatus('success','인증 성공');_finalResult='pass';setTimeout(doCapPass,700);
+    } else if(p.verdict==='fail'||_attempts>=2){
+      _cScores.ai=false;cSetBadge('ai','fail');cBotBubble(p.reply||'❌ 차단되었습니다.');
+      cSetStatus('fail','인증 실패');_finalResult='fail';setTimeout(()=>doCapFail('봇으로 의심'),700);
+    } else {
+      cSetBadge('ai','active');cBotBubble(p.reply||'조금 더 자세히 말씀해 주세요.');
+      cSetStatus('idle','답변을 입력해 주세요');
+      _locked=false;_shownAt=Date.now();_ksTimes=[];_lastKt=0;_pasted=false;
+      input.disabled=false;document.getElementById('cSend').disabled=false;
+      setTimeout(()=>input.focus(),100);
+    }
+  }catch(err){
+    cHideTyping();_apiFlight=false;
+    const v=localVerdict(text);
+    if(v==='pass'){_cScores.ai=true;cSetBadge('ai','pass');cBotBubble('✅ 인증 완료.');cSetStatus('success','인증 성공');_finalResult='pass';setTimeout(doCapPass,700);}
+    else if(_attempts>=2){_cScores.ai=false;cSetBadge('ai','fail');cBotBubble('❌ 인증 실패.');cSetStatus('fail','인증 실패');setTimeout(()=>doCapFail('의미 있는 답변 미확인'),700);}
+    else{cBotBubble('네트워크 오류. 다시 답변해 주세요.');cSetStatus('idle','다시 시도');_locked=false;input.disabled=false;document.getElementById('cSend').disabled=false;setTimeout(()=>input.focus(),100);}
+  }
+}
+
+function doCapPass(){
+  $cid('chatSection').style.display='none';
+  $cid('rIcon').textContent='✅';$cid('rTitle').textContent='인증 성공';$cid('rTitle').style.color='#1A7A4A';
+  $cid('rDesc').textContent='ROSA Card가 사람임을 확인했습니다.\n잠시 후 작업이 승인됩니다.';
+  $cid('rBar').className='r-bar success';
+  $cid('rBtn').textContent='확인';$cid('rBtn').className='r-btn success';
+  $cid('rBtn').onclick=()=>{$cid('captchaOverlay').classList.remove('open');if(_cb){_cb(true);_cb=null;}};
+  $cid('cResult').classList.add('show');
+  setTimeout(()=>{$cid('captchaOverlay').classList.remove('open');if(_cb){_cb(true);_cb=null;}},1600);
+}
+
+function doCapFail(reason){
+  _finalResult='fail';_locked=true;
+  $cid('cInput').disabled=true;$cid('cSend').disabled=true;
+  $cid('chatSection').style.display='none';
+  $cid('rIcon').textContent='❌';$cid('rTitle').textContent='인증 실패';$cid('rTitle').style.color='#B02020';
+  $cid('rDesc').textContent=(reason||'봇으로 의심되는 활동 감지')+'\n다시 시도하거나 취소하세요.';
+  $cid('rBar').className='r-bar fail';
+  $cid('rBtn').textContent='다시 시도';$cid('rBtn').className='r-btn fail';
+  $cid('rBtn').onclick=()=>openCaptcha(_cb);
+  $cid('cResult').classList.add('show');cSetStatus('fail','인증 실패');
+}
+
+/* 삭제 버튼 → 캡챠 보호 */
+function confirmDeleteAS(){
+  openCaptcha(function(passed){
+    if(passed){
+      resetASData();
+      clearASStorage();
+      updateAdaptBox();
+    }
+  });
+}
+</script>
+</body>
+</html>

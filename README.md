@@ -28,7 +28,13 @@ npm run dev
 - React
 - Tailwind CSS
 
+## Source Code
+
+The full source code of ROSA Card is open. You can download it as a ZIP from the app's Files, or clone this repository.
+
 ## License
+
+Copyright 2026 뽀얀 (Ppoyan)
 
 ROSA Card project code is licensed under the [Apache License 2.0](LICENSE).
 Third-party dependencies retain their respective licenses. The license does not grant rights to third-party trademarks.
