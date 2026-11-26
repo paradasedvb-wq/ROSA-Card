@@ -1,5 +1,7 @@
 # ROSA Card
 
+Play live: <https://rosacard.lovable.app> · Source: <https://github.com/paradasedvb-wq/ROSA-Card>
+
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
@@ -30,7 +32,7 @@ npm run dev
 
 ## Source Code
 
-The full source code of ROSA Card is open. You can download it as a ZIP from the app's Files, or clone this repository.
+The full source code of ROSA Card is open. The repository you are reading is the source; you can also download it as a ZIP from the app's Files.
 
 ## License
 
